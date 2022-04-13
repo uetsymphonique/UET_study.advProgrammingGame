@@ -1,0 +1,69 @@
+# depslib dependency file v1.0
+1649648107 source:c:\users\admin\desktop\learnsdl\projectgame\ltexture_func.cpp
+	"LTexture.hpp"
+
+1649589189 c:\users\admin\desktop\learnsdl\projectgame\ltexture.hpp
+	"params.hpp"
+	"Vec2d.hpp"
+
+1649812926 source:c:\users\admin\desktop\learnsdl\projectgame\main.cpp
+	"params.hpp"
+	"LTexture.hpp"
+	"Ball.hpp"
+	"Hole.hpp"
+	"Block.hpp"
+
+1648316132 source:c:\users\admin\desktop\learnsdl\projectgame\sfx.cpp
+	<iostream>
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_mixer.h>
+	"sfx.hpp"
+
+1648317061 c:\users\admin\desktop\learnsdl\projectgame\sfx.hpp
+	<iostream>
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_mixer.h>
+
+1648317085 source:c:\users\admin\desktop\learnsdl\projectgame\sfx_func.cpp
+	<iostream>
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_mixer.h>
+	"sfx.hpp"
+
+1649649168 c:\users\admin\desktop\learnsdl\projectgame\ball.hpp
+	"Vec2d.hpp"
+	"LTexture.hpp"
+
+1649644593 c:\users\admin\desktop\learnsdl\projectgame\vec2d.hpp
+	"params.hpp"
+
+1649649283 source:c:\users\admin\desktop\learnsdl\projectgame\ball_func.cpp
+	"Ball.hpp"
+
+1649587965 source:c:\users\admin\desktop\learnsdl\projectgame\hole_func.cpp
+	"Hole.hpp"
+
+1649587956 c:\users\admin\desktop\learnsdl\projectgame\hole.hpp
+	"params.hpp"
+	"LTexture.hpp"
+	"Vec2d.hpp"
+
+1649812016 c:\users\admin\desktop\learnsdl\projectgame\params.hpp
+	<iostream>
+	<cmath>
+	<vector>
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_ttf.h>
+	<SDL_mixer.h>
+
+1649605014 source:c:\users\admin\desktop\learnsdl\projectgame\block_func.cpp
+	"Block.hpp"
+
+1649605045 c:\users\admin\desktop\learnsdl\projectgame\block.hpp
+	"params.hpp"
+	"LTexture.hpp"
+
