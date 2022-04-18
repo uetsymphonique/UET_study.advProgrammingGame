@@ -43,9 +43,9 @@
 		<Unit filename="SDL2.dll" />
 		<Unit filename="STLalgorithm.txt" />
 		<Unit filename="Vec2d.hpp" />
-		<Unit filename="input.txt" />
 		<Unit filename="main.cpp" />
-		<Unit filename="output.txt" />
+		<Unit filename="note.txt" />
+		<Unit filename="params.cpp" />
 		<Unit filename="params.hpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />

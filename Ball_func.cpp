@@ -34,11 +34,12 @@ void Ball::handleMouseEvent(SDL_Event *e,SDL_Renderer* gRenderer){
         }
         //gPowerFgClip->w=int(velocBall.getScale());
         if(velocBall.x<0) angleDirect+=180;
-        std::cout<<velocBall.getScale()<<'\n';
+        //std::cout<<velocBall.getScale()<<'\n';
     }
     else {isCharging = false;}
 }
-void Ball::moveBall(){
+
+void Ball::moveBall(SDL_Rect blockRectList[],int numOfBlocks){
     if(!isCharging){
         setPos(getPosX()+velocBall.x,getPosY()+velocBall.y);
         //normalize position of ball
@@ -53,6 +54,20 @@ void Ball::moveBall(){
         if(getPosY()==0||getPosY()+BALL_HEIGHT==SCREEN_HEIGHT){
             velocBall.y=0-velocBall.y;
         }
+
+
+        for(int i=0;i<numOfBlocks;i++){
+            if(checkCollision(blockRectList[i])==3){
+                velocBall.y=0-velocBall.y;velocBall.x=0-velocBall.x;
+            }
+            if(checkCollision(blockRectList[i])==1){
+                velocBall.y=0-velocBall.y;
+            }
+            if(checkCollision(blockRectList[i])==2){
+                velocBall.x=0-velocBall.x;
+            }
+        }
+
         velocBall.x/=DECREASE_VEL;
         velocBall.y/=DECREASE_VEL;
     }
@@ -69,17 +84,17 @@ bool Ball::loadTextureFromFile(SDL_Renderer* gRenderer,std::string ballpath,std:
     if(!gPowermeterBg.loadFromFile(gRenderer,powermeterbgpath)){
         std::cout<<"load PM_background failed\n";success = false;
     }
-    if(!gPowermeterFg.loadFromFile(gRenderer,powermeterfgpath)){
-        std::cout<<"load PM_background failed\n";success = false;
-    }if(!gPowermeterOverlay.loadFromFile(gRenderer,powerMeterOverlayPath)){
+    for(int i=0;i<57;i++){
+        if(!gPowermeterFg[i].loadFromFile(gRenderer,powermeterfgpath)){
+            std::cout<<"load PM_background failed\n";success = false;
+        }
+        gPowermeterFg[i].setWidth(i);
+        gPowermeterFg[i].setHeight(8);
+    }
+    if(!gPowermeterOverlay.loadFromFile(gRenderer,powerMeterOverlayPath)){
         std::cout<<"load PM_overlay failed\n";success = false;
     }
-    for(int i=0;i<57;i++){
-        powerClips[i].x=404;
-        powerClips[i].y=604;
-        powerClips[i].h=8;
-        powerClips[i].w=56;
-    }
+
     return success;
 }
 void Ball::renderBall(SDL_Renderer* gRenderer){
@@ -91,7 +106,7 @@ void Ball::renderBall(SDL_Renderer* gRenderer){
     if(isCharging&&isDown){
         //std::cout<<gPowerFgClip->w<<'\n';
         int scale = velocBall.getScale();
-        gPowermeterFg.render(gRenderer,404,604,&powerClips[scale]);
+        gPowermeterFg[scale].render(gRenderer,404,604);
         gDirect.render(gRenderer,getPosX(),getPosY()+8-32,NULL,angleDirect);
     }
 }
@@ -99,6 +114,9 @@ void Ball::freeBall(){
     free();
     gDirect.free();
     gPowermeterBg.free();
-    gPowermeterFg.free();
+    for(int i=0;i<57;i++){
+        gPowermeterFg[i].free();
+    }
+
     gPowermeterOverlay.free();
 }

@@ -140,5 +140,74 @@ double LTexture::getPosX(){
 double LTexture::getPosY(){
     return pos.y;
 }
+SDL_Rect LTexture::getRect(){
+    SDL_Rect ansRect = {pos.x,pos.y,mWidth,mHeight};
+    return ansRect;
+}
+int LTexture::checkCollision(SDL_Rect b){
+    SDL_Rect a = getRect();
+    //The sides of the rectangles
+    int leftA, leftB;
+    int rightA, rightB;
+    int topA, topB;
+    int bottomA, bottomB;
+
+    //Calculate the sides of rect A
+    leftA = a.x;
+    rightA = a.x + a.w;
+    topA = a.y;
+    bottomA = a.y + a.h;
+
+    //Calculate the sides of rect B
+    leftB = b.x;
+    rightB = b.x + b.w;
+    topB = b.y;
+    bottomB = b.y + b.h;
+
+    //If any of the sides from A are outside of B
+    if( bottomA < topB ) {
+        return 0;
+    }
+
+    if( topA > bottomB ) {
+        return 0;
+    }
+
+    if( rightA < leftB ) {
+        return 0;
+    }
+
+    if( leftA > rightB ) {
+        return 0;
+    }
+
+    if(rightA>=leftB&&leftA<leftB){
+        rightA = leftB;setPosX(leftB-a.w);
+    }
+    else if(leftA<=rightB&&rightB<rightA){
+        leftA = rightB;setPosX(rightB);
+    }
+    else if(bottomA>=topB&&topA<topB){
+        bottomA = topB; setPosY(topB-a.h);
+    }
+    else if(topA<=bottomB&&bottomB<bottomA){
+        topA=bottomB;setPosY(bottomB);
+    }
+
+    //If none of the sides from A are outside B
+    if(leftB==rightA||leftA==rightB){
+        if(topB==bottomA||topA==bottomB){
+            return 3;
+        }
+    }
+    if((leftA<leftB&&leftB==rightA)||(leftA==rightB&&rightB<rightA)) {
+
+        return 2;SDL_Delay(10);
+    }
+
+    if((topA<topB&&topB==bottomA)||(topA==bottomB&&bottomB<bottomA)) {return 1;SDL_Delay(10);}
+
+    SDL_Delay(10);
+}
 
 

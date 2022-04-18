@@ -3,6 +3,7 @@
 #include "Ball.hpp"
 #include "Hole.hpp"
 #include "Block.hpp"
+#include "Vec2d.hpp"
 Mix_Music *gMusic = NULL;
 bool init(SDL_Window* &gWindow,SDL_Renderer* &gRenderer){
     bool success = true;
@@ -13,7 +14,7 @@ bool init(SDL_Window* &gWindow,SDL_Renderer* &gRenderer){
         //set texture filtering to linear
         if(!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY,"1"))
             std::cout<<"warning: linear texture filtering not enabled!\n";
-        gWindow = SDL_CreateWindow("SDL Tutorial",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,SCREEN_WIDTH,SCREEN_HEIGHT,SDL_WINDOW_SHOWN);
+        gWindow = SDL_CreateWindow("game ngu toan bug",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,SCREEN_WIDTH,SCREEN_HEIGHT,SDL_WINDOW_SHOWN);
         if(gWindow==NULL){
             std::cout<<"window couldn't be created! SDL Error: "<<SDL_GetError()<<'\n';
             success = false;
@@ -114,7 +115,8 @@ int main(int argc,char* argv[])
     LTexture gTextEnterTexture;
     LTexture gLogoGame;
     Ball ball;
-    vector<Block> blockList(2);
+    vector <Block> blockList(2);
+    SDL_Rect blockRectList[2];
     Block block;
     Hole hole;
     if(!init(gWindow,gRenderer))std::cout<<"init failed\n";
@@ -135,6 +137,10 @@ int main(int argc,char* argv[])
             bool isEnter = false;
             bool isPlayMusic = false;
             ball.setPosBall(100,100);
+            for(int i=0;i<blockList.size();i++){
+                blockList[i].setPos(100*i+100,400);
+                blockRectList[i] = {100*i+100,400,32,32};
+            }
             SDL_Event e;
             while(!quit){
                 while(SDL_PollEvent(&e)!=0){
@@ -158,16 +164,16 @@ int main(int argc,char* argv[])
                 if(!isPlayMusic){Mix_PlayMusic( gMusic, -1 );isPlayMusic = true;std::cout<<"play music\n";}
                 if(isEnter){
                     ball.renderBall(gRenderer);
-                    for(int i=0;i<blockList.size();i++){
-                        blockList[i].setPos(100*i,400);
-                        blockList[i].render(gRenderer);
-                    }
+
 
                     hole.setPos(200,200);
                     hole.render(gRenderer);
-                    ball.moveBall();
+                    ball.moveBall(blockRectList,2);
                     if(abs(hole.getPosX()-ball.getPosX())>5||abs(hole.getPosY()-ball.getPosY())>5){
                         ball.renderBall(gRenderer);
+                        for(int i=0;i<blockList.size();i++){
+                            blockList[i].render(gRenderer);
+                        }
                     }
                     else{
                         ball.setPosBall(hole.getPosX(),hole.getPosY());
@@ -184,6 +190,7 @@ int main(int argc,char* argv[])
     }
     TTF_CloseFont( gFont );gFont = NULL;
 	Mix_FreeMusic( gMusic );gMusic = NULL;
+
     close(gWindow,gRenderer);
 
     return 0;

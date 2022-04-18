@@ -1,0 +1,16 @@
+char LTexture::hasCollision (LTexture other){
+    SDL_Rect thisRect = this.getRect();
+    SDL_Rect otherRect = other.getRect();
+    if (thisRect.y+thisRect.h==otherRect.y||thisRect.y==otherRect.y+thisRect.h){
+        if((thisRect.x>=otherRect.x&&thisRect.x<=otherRect.x+otherRect.w)
+        ||(thisRect.x+thisRect.w>=otherRect.x&&thisRect.x+thisRect.w<=otherRect.x+otherRect.w)){
+            return 'y';
+        }
+    }
+    else if(thisRect.x+thisRect.w==otherRect.x||thisRect.x==otherRect.x+thisRect.w){
+        if((thisRect.y>=otherRect.y&&thisRect.y<=otherRect.y+otherRect.h)
+        ||(thisRect.x+thisRect.w>=otherRect.x&&thisRect.x+thisRect.w<=otherRect.x+otherRect.w)){
+            return 'y';
+        }
+    }
+}

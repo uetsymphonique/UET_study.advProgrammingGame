@@ -67,3 +67,56 @@
 	"params.hpp"
 	"LTexture.hpp"
 
+1650242978 source:c:\users\admin\desktop\advprogrammingbtl\ball_func.cpp
+	"Ball.hpp"
+
+1650242946 c:\users\admin\desktop\advprogrammingbtl\ball.hpp
+	"Vec2d.hpp"
+	"LTexture.hpp"
+	"Block.hpp"
+
+1649644593 c:\users\admin\desktop\advprogrammingbtl\vec2d.hpp
+	"params.hpp"
+
+1650124811 c:\users\admin\desktop\advprogrammingbtl\params.hpp
+	<iostream>
+	<cmath>
+	<vector>
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_ttf.h>
+	<SDL_mixer.h>
+
+1650214407 c:\users\admin\desktop\advprogrammingbtl\ltexture.hpp
+	"params.hpp"
+	"Vec2d.hpp"
+
+1649605014 source:c:\users\admin\desktop\advprogrammingbtl\block_func.cpp
+	"Block.hpp"
+
+1649605045 c:\users\admin\desktop\advprogrammingbtl\block.hpp
+	"params.hpp"
+	"LTexture.hpp"
+
+1649587965 source:c:\users\admin\desktop\advprogrammingbtl\hole_func.cpp
+	"Hole.hpp"
+
+1649587956 c:\users\admin\desktop\advprogrammingbtl\hole.hpp
+	"params.hpp"
+	"LTexture.hpp"
+	"Vec2d.hpp"
+
+1650167787 source:c:\users\admin\desktop\advprogrammingbtl\ltexture_func.cpp
+	"LTexture.hpp"
+
+1650242978 source:c:\users\admin\desktop\advprogrammingbtl\main.cpp
+	"params.hpp"
+	"LTexture.hpp"
+	"Ball.hpp"
+	"Hole.hpp"
+	"Block.hpp"
+	"Vec2d.hpp"
+
+1650124811 source:c:\users\admin\desktop\advprogrammingbtl\params.cpp
+	"params.hpp"
+

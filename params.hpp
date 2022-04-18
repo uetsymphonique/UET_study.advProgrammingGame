@@ -10,5 +10,6 @@
 using std::vector;
 const int SCREEN_WIDTH = 480;
 const int SCREEN_HEIGHT = 640;
+//int checkCollision( SDL_Rect a, SDL_Rect b );
 #endif // PARAMS__
 

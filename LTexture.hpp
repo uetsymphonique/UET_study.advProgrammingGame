@@ -2,6 +2,7 @@
 #define LTEXTURECLASS__
 #include "params.hpp"
 #include "Vec2d.hpp"
+using std::string;
 class LTexture
 {
     public:
@@ -33,14 +34,18 @@ class LTexture
     //Set pos
     void setPos(Vec2d p){
         pos = p;
-    }
-    void setPos (double x,double y){
+    }void setPos (double x,double y){
         pos = Vec2d(x,y);
-    }
-    void setPosX(double x){
+    }void setPosX(double x){
         pos.x=x;
     }void setPosY(double y){
         pos.y=y;
+    }
+
+    void setHeight(int h){
+        mHeight=h;
+    }void setWidth(int w){
+        mWidth=w;
     }
 
 
@@ -54,9 +59,8 @@ class LTexture
     double getPosX();
     double getPosY();
     Vec2d getPos();
-
-
-
+    SDL_Rect getRect();
+    int checkCollision(SDL_Rect b);
     private:
     //The actual hardware texture
     SDL_Texture* mTexture;

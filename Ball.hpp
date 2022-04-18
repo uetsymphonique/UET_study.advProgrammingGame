@@ -2,6 +2,7 @@
 #define BALLCLASS__
 #include "Vec2d.hpp"
 #include "LTexture.hpp"
+#include "Block.hpp"
 class Ball:public LTexture{
 public:
     Ball(){
@@ -10,7 +11,7 @@ public:
     void handleMouseEvent(SDL_Event *e,SDL_Renderer* gRenderer);
     void setPosBall(double x,double y);
     void standardlizePosBall();
-    void moveBall();
+    void moveBall(SDL_Rect blockRecList[],int numOfBlocks);
     void renderBall(SDL_Renderer* gRenderer);
     bool loadTextureFromFile(SDL_Renderer* gRenderer,std::string ballpath,std::string directpath,
                                std::string powerMeterBgPath,std::string powerMeterFgPath,std::string powerMeterOverlayPath);
@@ -30,10 +31,7 @@ private:
     //More Texture...
     LTexture gDirect; //direction
     LTexture gPowermeterBg;
-    LTexture gPowermeterFg;
+    LTexture gPowermeterFg[57];
     LTexture gPowermeterOverlay;
-
-    SDL_Rect powerClips[57];
-
 };
 #endif // BALLCLASS__
