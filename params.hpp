@@ -10,6 +10,10 @@
 using std::vector;
 const int SCREEN_WIDTH = 480;
 const int SCREEN_HEIGHT = 640;
-//int checkCollision( SDL_Rect a, SDL_Rect b );
+bool checkCollision( SDL_Rect a, SDL_Rect b ) ;
+struct SDL_PairRect{
+    SDL_Rect rect1;
+    SDL_Rect rect2;
+};
 #endif // PARAMS__
 

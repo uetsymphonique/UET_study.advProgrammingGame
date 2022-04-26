@@ -99,115 +99,67 @@ void LTexture::setAlpha( Uint8 alpha ) {
 void LTexture::render( SDL_Renderer* gRenderer, SDL_Rect* clip, double angle, SDL_Point* center,SDL_RendererFlip flip  ) {
     //Set rendering space and render to screen
     SDL_Rect renderQuad = { pos.x, pos.y, mWidth, mHeight };
-
     //Set clip rendering dimensions
     if( clip != NULL ) {
         renderQuad.w = clip->w;
         renderQuad.h = clip->h;
     }
-
     //Render to screen
     SDL_RenderCopyEx( gRenderer, mTexture, clip, &renderQuad, angle, center,flip );
 }
 void LTexture::render( SDL_Renderer* gRenderer, int x, int y, SDL_Rect* clip, double angle, SDL_Point* center,SDL_RendererFlip flip  ) {
     //Set rendering space and render to screen
     SDL_Rect renderQuad = { x, y, mWidth, mHeight };
-    pos.x = x;pos.y = y;
-
+    pos.x = x;
+    pos.y = y;
     //Set clip rendering dimensions
     if( clip != NULL ) {
         renderQuad.w = clip->w;
         renderQuad.h = clip->h;
     }
-
     //Render to screen
     SDL_RenderCopyEx( gRenderer, mTexture, clip, &renderQuad, angle, center,flip );
 }
 
+//getter
 int LTexture::getWidth() {
     return mWidth;
 }
-
 int LTexture::getHeight() {
     return mHeight;
 }
-Vec2d LTexture::getPos(){
+Vec2d LTexture::getPos() {
     return pos;
 }
-double LTexture::getPosX(){
+double LTexture::getPosX() {
     return pos.x;
 }
-double LTexture::getPosY(){
+double LTexture::getPosY() {
     return pos.y;
 }
-SDL_Rect LTexture::getRect(){
+SDL_Rect LTexture::getRect() {
     SDL_Rect ansRect = {pos.x,pos.y,mWidth,mHeight};
     return ansRect;
 }
-int LTexture::checkCollision(SDL_Rect b){
-    SDL_Rect a = getRect();
-    //The sides of the rectangles
-    int leftA, leftB;
-    int rightA, rightB;
-    int topA, topB;
-    int bottomA, bottomB;
-
-    //Calculate the sides of rect A
-    leftA = a.x;
-    rightA = a.x + a.w;
-    topA = a.y;
-    bottomA = a.y + a.h;
-
-    //Calculate the sides of rect B
-    leftB = b.x;
-    rightB = b.x + b.w;
-    topB = b.y;
-    bottomB = b.y + b.h;
-
-    //If any of the sides from A are outside of B
-    if( bottomA < topB ) {
-        return 0;
-    }
-
-    if( topA > bottomB ) {
-        return 0;
-    }
-
-    if( rightA < leftB ) {
-        return 0;
-    }
-
-    if( leftA > rightB ) {
-        return 0;
-    }
-
-    if(rightA>=leftB&&leftA<leftB){
-        rightA = leftB;setPosX(leftB-a.w);
-    }
-    else if(leftA<=rightB&&rightB<rightA){
-        leftA = rightB;setPosX(rightB);
-    }
-    else if(bottomA>=topB&&topA<topB){
-        bottomA = topB; setPosY(topB-a.h);
-    }
-    else if(topA<=bottomB&&bottomB<bottomA){
-        topA=bottomB;setPosY(bottomB);
-    }
-
-    //If none of the sides from A are outside B
-    if(leftB==rightA||leftA==rightB){
-        if(topB==bottomA||topA==bottomB){
-            return 3;
-        }
-    }
-    if((leftA<leftB&&leftB==rightA)||(leftA==rightB&&rightB<rightA)) {
-
-        return 2;SDL_Delay(10);
-    }
-
-    if((topA<topB&&topB==bottomA)||(topA==bottomB&&bottomB<bottomA)) {return 1;SDL_Delay(10);}
-
-    SDL_Delay(10);
+//setter
+void LTexture::setPos(Vec2d p) {
+    pos = p;
 }
+void LTexture::setPos (double x,double y) {
+    pos = Vec2d(x,y);
+}
+void LTexture::setPosX(double x) {
+    pos.x=x;
+}
+void LTexture::setPosY(double y) {
+    pos.y=y;
+}
+void LTexture::setHeight(int h) {
+    mHeight=h;
+}
+void LTexture::setWidth(int w) {
+    mWidth=w;
+}
+
 
 

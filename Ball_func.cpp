@@ -16,6 +16,7 @@ void Ball::handleMouseEvent(SDL_Event *e,SDL_Renderer* gRenderer){
     }
     if(e->type==SDL_MOUSEBUTTONUP){
         isDown = false;
+        Mix_PlayChannel(-1,gChargeChunk,0);
     }
     if(isDown&&e->type==SDL_MOUSEMOTION){
 
@@ -27,10 +28,10 @@ void Ball::handleMouseEvent(SDL_Event *e,SDL_Renderer* gRenderer){
 
 
         angleDirect = atan(1.0*velocBall.y/velocBall.x)*(180/3.1415)+90;
-        if(velocBall.getScale()>56){
+        if(velocBall.getScale()>MAX_SCALE_VEL){
             double scale = velocBall.getScale();
-            velocBall.x=velocBall.x/scale*56;
-            velocBall.y=velocBall.y/scale*56;
+            velocBall.x=velocBall.x/scale*MAX_SCALE_VEL;
+            velocBall.y=velocBall.y/scale*MAX_SCALE_VEL;
         }
         //gPowerFgClip->w=int(velocBall.getScale());
         if(velocBall.x<0) angleDirect+=180;
@@ -38,42 +39,146 @@ void Ball::handleMouseEvent(SDL_Event *e,SDL_Renderer* gRenderer){
     }
     else {isCharging = false;}
 }
-
-void Ball::moveBall(SDL_Rect blockRectList[],int numOfBlocks){
+void Ball::moveBall(SDL_Rect blockRectList[],int numOfBlocks,SDL_PairRect pairTeleRectList[],int numOfPairsTele){
     if(!isCharging){
-        setPos(getPosX()+velocBall.x,getPosY()+velocBall.y);
-        //normalize position of ball
-        if(getPosX()<0)setPosX(0);
-        if(getPosX()+BALL_WIDTH>SCREEN_WIDTH)setPosX(SCREEN_WIDTH-BALL_WIDTH);
-        if(getPosY()<0)setPosY(0);
-        if(getPosY()+BALL_HEIGHT>SCREEN_HEIGHT)setPosY(SCREEN_HEIGHT-BALL_HEIGHT);
-        //collision with wall screen
-        if(getPosX()==0||getPosX()+BALL_WIDTH==SCREEN_WIDTH){
-            velocBall.x=0-velocBall.x;
+
+        Vec2d v = velocBall;
+        bool collisionX = false;
+        bool collisionY = false;
+        SDL_Rect ballRect = getRect();
+        int leftBall,rightBall,topBall, bottomBall;
+        leftBall = ballRect.x; rightBall = leftBall + ballRect.w;
+        topBall = ballRect.y; bottomBall = topBall + ballRect.h;
+        double ratioVeloc = velocBall.getRatio();
+        //check collision with blocks and walls
+
+        //collision made by only change of x
+        ballRect.x+=velocBall.x;
+        if(ballRect.x+BALL_WIDTH>=SCREEN_WIDTH){
+            velocBall = Vec2d(SCREEN_WIDTH-rightBall,(SCREEN_WIDTH-rightBall)/ratioVeloc);
+            collisionX = true;
+        }else if(ballRect.x<=0){
+            velocBall = Vec2d(0-leftBall,(0-leftBall)/ratioVeloc);
+            collisionX = true;
+        }else{
+            for(int i=0;i<numOfBlocks;i++){
+                if(checkCollision(ballRect,blockRectList[i])){
+                    collisionX = true;
+                    if(velocBall.x>0){
+                        velocBall = Vec2d(blockRectList[i].x-rightBall,(blockRectList[i].x-rightBall)/ratioVeloc);
+                    }else{
+                        velocBall = Vec2d(blockRectList[i].x+blockRectList[i].w-leftBall,(blockRectList[i].x+blockRectList[i].w-leftBall)/ratioVeloc);
+                    }
+                    break;
+                }
+            }
         }
-        if(getPosY()==0||getPosY()+BALL_HEIGHT==SCREEN_HEIGHT){
-            velocBall.y=0-velocBall.y;
+        //collision made by only change of y
+        ballRect.x = leftBall;
+        ballRect.y+=velocBall.y;
+        if(ballRect.y+BALL_HEIGHT>=SCREEN_HEIGHT){
+            velocBall = Vec2d((SCREEN_HEIGHT-bottomBall)*ratioVeloc,SCREEN_HEIGHT-bottomBall);
+            collisionY = true;
+        }else if(ballRect.y<=0){
+            velocBall = Vec2d((0-topBall)*ratioVeloc,0-topBall);collisionY = true;
+        }else{
+            for(int i=0;i<numOfBlocks;i++){
+                if(checkCollision(ballRect,blockRectList[i])){
+                    if(velocBall.y>0){
+                        velocBall = Vec2d((blockRectList[i].y-bottomBall)*ratioVeloc,blockRectList[i].y-bottomBall);
+                    }else{
+                        velocBall = Vec2d((blockRectList[i].y+blockRectList[i].h-topBall)*ratioVeloc,blockRectList[i].y+blockRectList[i].h-topBall);
+                    }
+                    collisionY = true;
+                    break;
+                }
+            }
+        }
+        //collision made by x and y change
+        ballRect.x+=velocBall.x;
+        if(!collisionX&&!collisionY){
+            for(int i=0;i<numOfBlocks;i++){
+                if(checkCollision(ballRect,blockRectList[i])){
+                    Vec2d v1;
+                    if(velocBall.y>0){
+                        v1 = Vec2d((blockRectList[i].y-bottomBall)*ratioVeloc,blockRectList[i].y-bottomBall);
+                    }else{
+                        v1 = Vec2d((blockRectList[i].y+blockRectList[i].h-topBall)*ratioVeloc,blockRectList[i].y+blockRectList[i].h-topBall);
+                    }
+                    SDL_Rect tempBallRect = getRect();
+                    tempBallRect.x+=velocBall.x;
+                    tempBallRect.y+=velocBall.y;
+                    if(checkCollision(tempBallRect,blockRectList[i])){
+                        collisionY = true;
+                    }
+                    Vec2d v2;
+                    if(velocBall.x>0){
+                        v2 = Vec2d(blockRectList[i].x-rightBall,(blockRectList[i].x-rightBall)/ratioVeloc);
+                    }else{
+                        v2 = Vec2d(blockRectList[i].x+blockRectList[i].w-leftBall,(blockRectList[i].x+blockRectList[i].w-leftBall)/ratioVeloc);
+                    }
+                    tempBallRect = getRect();
+                    tempBallRect.x+=velocBall.x;
+                    tempBallRect.y+=velocBall.y;
+                    if(checkCollision(tempBallRect,blockRectList[i])){
+                        collisionX = true;
+                    }
+                    if(collisionX)velocBall = v1;
+                    if(collisionY)velocBall = v2;
+                    break;
+                }
+            }
         }
 
+        pos.x+=velocBall.x;
+        pos.y+=velocBall.y;
+        velocBall = v;
+        if(collisionX)velocBall.x=0-velocBall.x/DECREASE_VEL;
+        if(collisionY)velocBall.y=0-velocBall.y/DECREASE_VEL;
 
-        for(int i=0;i<numOfBlocks;i++){
-            if(checkCollision(blockRectList[i])==3){
-                velocBall.y=0-velocBall.y;velocBall.x=0-velocBall.x;
+
+        //collision with teleports
+        if(int(velocBall.getScale())>0){
+            for(int i=0;i<numOfPairsTele;i++){
+                if(checkCollision(getRect(),pairTeleRectList[i].rect1)){
+                    setPosX(pairTeleRectList[i].rect2.x);
+                    setPosY(pairTeleRectList[i].rect2.y);
+                    SDL_Rect tempRect = getRect();
+                    tempRect.x += velocBall.x/DECREASE_VEL;
+                    tempRect.y += velocBall.y/DECREASE_VEL;
+                    if(checkCollision(tempRect,pairTeleRectList[i].rect2)){
+                        pos.x += velocBall.x/abs(velocBall.x)*20;
+                        pos.y += velocBall.y/abs(velocBall.y)*20;
+                        //velocBall.x=0;velocBall.y=0;
+                    }
+                    break;
+                } else if(checkCollision(getRect(),pairTeleRectList[i].rect2)){
+                    setPosX(pairTeleRectList[i].rect1.x);
+                    setPosY(pairTeleRectList[i].rect1.y);
+                    SDL_Rect tempRect = getRect();
+                    tempRect.x += velocBall.x/DECREASE_VEL;
+                    tempRect.y += velocBall.y/DECREASE_VEL;
+                    if(checkCollision(tempRect,pairTeleRectList[i].rect1)){
+                        pos.x += velocBall.x/abs(velocBall.x)*20;
+                        pos.y += velocBall.y/abs(velocBall.y)*20;
+                        //velocBall.x=0;velocBall.y=0;
+                    }
+                    break;
+                }
             }
-            if(checkCollision(blockRectList[i])==1){
-                velocBall.y=0-velocBall.y;
-            }
-            if(checkCollision(blockRectList[i])==2){
-                velocBall.x=0-velocBall.x;
-            }
+
         }
+
 
         velocBall.x/=DECREASE_VEL;
         velocBall.y/=DECREASE_VEL;
+
     }
+
 }
 bool Ball::loadTextureFromFile(SDL_Renderer* gRenderer,std::string ballpath,std::string directpath,
-                               std::string powermeterbgpath,std::string powermeterfgpath,std::string powerMeterOverlayPath){
+                               std::string powermeterbgpath,std::string powermeterfgpath,std::string powerMeterOverlayPath,
+                               std::string chargeMusicPath){
     bool success = true;
     if(!loadFromFile(gRenderer,ballpath)){
         std::cout<<"load ball failed\n";success = false;
@@ -94,7 +199,10 @@ bool Ball::loadTextureFromFile(SDL_Renderer* gRenderer,std::string ballpath,std:
     if(!gPowermeterOverlay.loadFromFile(gRenderer,powerMeterOverlayPath)){
         std::cout<<"load PM_overlay failed\n";success = false;
     }
-
+    gChargeChunk = Mix_LoadWAV(chargeMusicPath.c_str());
+    if(gChargeChunk == NULL){
+        std::cout<<"load charge chunk failed!\n";success = false;
+    }
     return success;
 }
 void Ball::renderBall(SDL_Renderer* gRenderer){
@@ -106,7 +214,7 @@ void Ball::renderBall(SDL_Renderer* gRenderer){
     if(isCharging&&isDown){
         //std::cout<<gPowerFgClip->w<<'\n';
         int scale = velocBall.getScale();
-        gPowermeterFg[scale].render(gRenderer,404,604);
+        gPowermeterFg[int(scale*1.4)].render(gRenderer,404,604);
         gDirect.render(gRenderer,getPosX(),getPosY()+8-32,NULL,angleDirect);
     }
 }
@@ -119,4 +227,8 @@ void Ball::freeBall(){
     }
 
     gPowermeterOverlay.free();
+}
+
+double Ball::getScaleVelocity(){
+    return velocBall.getScale();
 }

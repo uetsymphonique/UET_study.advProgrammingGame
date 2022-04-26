@@ -2,9 +2,9 @@
 #define BLOCKCLASS__
 #include "params.hpp"
 #include "LTexture.hpp"
-class Block:public LTexture{
-public:
+class Block:public LTexture {
+  public:
     Block();
-private:
+  private:
 };
 #endif // BLOCKCLASS__

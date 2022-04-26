@@ -40,8 +40,13 @@
 		<Unit filename="Hole_func.cpp" />
 		<Unit filename="LTexture.hpp" />
 		<Unit filename="LTexture_func.cpp" />
+		<Unit filename="PairTeleports.cpp" />
+		<Unit filename="PairTeleports.hpp" />
 		<Unit filename="SDL2.dll" />
 		<Unit filename="STLalgorithm.txt" />
+		<Unit filename="Teleport.cpp" />
+		<Unit filename="Teleport.hpp" />
+		<Unit filename="Utils.hpp" />
 		<Unit filename="Vec2d.hpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="note.txt" />

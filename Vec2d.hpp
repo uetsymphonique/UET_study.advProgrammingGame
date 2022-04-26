@@ -9,5 +9,8 @@ struct Vec2d{
     double getScale(){
         return sqrt(x*x+y*y);
     }
+    double getRatio(){
+        return x/y;
+    }
 };
 #endif // VEC2D__
