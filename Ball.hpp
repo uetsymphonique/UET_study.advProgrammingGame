@@ -11,7 +11,9 @@ class Ball:public LTexture {
     void handleMouseEvent(SDL_Event *e,SDL_Renderer* gRenderer);
     void setPosBall(double x,double y);
     void standardlizePosBall();
-    void moveBall(SDL_Rect blockRecList[],int numOfBlocks,SDL_PairRect pairTeleRectList[],int numOfPairsTele);
+    void moveBall(SDL_Rect blockRecList[],int numOfBlocks,
+                  SDL_PairRect pairTeleRectList[],int numOfPairsTele,
+                  bool hasSwamp = false,bool hasTeleport = false, bool hasWind = false, bool hasIce = false);
     void renderBall(SDL_Renderer* gRenderer);
     bool loadTextureFromFile(SDL_Renderer* gRenderer,std::string ballpath,std::string directpath,
                              std::string powerMeterBgPath,std::string powerMeterFgPath,std::string powerMeterOverlayPath,

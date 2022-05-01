@@ -7,6 +7,11 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
+#include <numeric>
+#include <random>
+#include <chrono>
+#include <ctime>
+#include <algorithm>
 using std::vector;
 const int SCREEN_WIDTH = 480;
 const int SCREEN_HEIGHT = 640;

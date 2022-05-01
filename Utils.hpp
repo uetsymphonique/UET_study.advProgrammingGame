@@ -48,14 +48,16 @@ bool init(SDL_Window* &gWindow,SDL_Renderer* &gRenderer){
         }
     }return success;
 }
-bool loadMedia(LTexture &gBackgroundTexture,
+bool loadMedia(LTexture &gBackgroundTexture1,LTexture &gBackgroundTexture2,LTexture &gBackgroundTexture3,LTexture &gBackgroundTexture4,
                LTexture &gTextEnterTexture,
                LTexture &gEnterTexture,
                LTexture &gLogoGame,
                Mix_Music* &gMusic,
                Ball& ball,
                Hole& hole,
-               vector<Block>&blockList,
+               Block &block1,Block &block2,Block &block3,Block &block4,
+               Block &block1Long,Block &block2Long,Block &block3Long,Block &block4Long,
+               Block &block1LongR,Block &block2LongR,Block &block3LongR,Block &block4LongR,
                Teleport &tele1,
                Teleport &tele2,
                TTF_Font* gFont,
@@ -63,15 +65,32 @@ bool loadMedia(LTexture &gBackgroundTexture,
     bool success = true;
     if(!tele1.loadFromFile(gRenderer,"gfx/teleport.png")){
          std::cout<<"failed load teleport texture\n";success = false;
-    }
-    if(!tele2.loadFromFile(gRenderer,"gfx/teleport.png")){
+    }if(!tele2.loadFromFile(gRenderer,"gfx/teleport.png")){
          std::cout<<"failed load teleport texture\n";success = false;
-    }
-
-    for(Block&block:blockList){
-        if(!block.loadFromFile(gRenderer,"gfx/tile32_dark.png")){
-            std::cout<<"failed load block texture\n";success = false;
-        }
+    }if(!block1.loadFromFile(gRenderer,"gfx/tile32_dark.png")){
+         std::cout<<"failed load block1 texture\n";success = false;
+    }if(!block2.loadFromFile(gRenderer,"gfx/tile32_lightyellow.png")){
+         std::cout<<"failed load block2 texture\n";success = false;
+    }if(!block3.loadFromFile(gRenderer,"gfx/tile32_lightpink.png")){
+         std::cout<<"failed load block3 texture\n";success = false;
+    }if(!block4.loadFromFile(gRenderer,"gfx/tile32_lightblue.png")){
+         std::cout<<"failed load block4 texture\n";success = false;
+    }if(!block1Long.loadFromFile(gRenderer,"gfx/tile32_dark150.png")){
+         std::cout<<"failed load block1Long texture\n";success = false;
+    }if(!block2Long.loadFromFile(gRenderer,"gfx/tile32_lightyellow150.png")){
+         std::cout<<"failed load block2Long texture\n";success = false;
+    }if(!block3Long.loadFromFile(gRenderer,"gfx/tile32_lightpink150.png")){
+         std::cout<<"failed load block3Long texture\n";success = false;
+    }if(!block4Long.loadFromFile(gRenderer,"gfx/tile32_lightblue150.png")){
+         std::cout<<"failed load block4Long texture\n";success = false;
+    }if(!block1LongR.loadFromFile(gRenderer,"gfx/tile32_dark150rotate.png")){
+         std::cout<<"failed load block1Long texture\n";success = false;
+    }if(!block2LongR.loadFromFile(gRenderer,"gfx/tile32_lightyellow150rotate.png")){
+         std::cout<<"failed load block2Long texture\n";success = false;
+    }if(!block3LongR.loadFromFile(gRenderer,"gfx/tile32_lightpink150rotate.png")){
+         std::cout<<"failed load block3Long texture\n";success = false;
+    }if(!block4LongR.loadFromFile(gRenderer,"gfx/tile32_lightblue150rotate.png")){
+         std::cout<<"failed load block4Long texture\n";success = false;
     }
 
     if(!ball.loadTextureFromFile(gRenderer,"gfx/ball.png","gfx/point.png",
@@ -82,7 +101,16 @@ bool loadMedia(LTexture &gBackgroundTexture,
     if(!hole.loadFromFile(gRenderer,"gfx/hole.png")){
         std::cout<<"failed load hole texture\n";success = false;
     }
-    if(!gBackgroundTexture.loadFromFile(gRenderer,"gfx/background.png")){
+    if(!gBackgroundTexture1.loadFromFile(gRenderer,"gfx/background.png")){
+        std::cout<<"failed load backgr\n";success = false;
+    }
+    if(!gBackgroundTexture2.loadFromFile(gRenderer,"gfx/background_desert.png")){
+        std::cout<<"failed load backgr\n";success = false;
+    }
+    if(!gBackgroundTexture3.loadFromFile(gRenderer,"gfx/background_tropicalLand.png")){
+        std::cout<<"failed load backgr\n";success = false;
+    }
+    if(!gBackgroundTexture4.loadFromFile(gRenderer,"gfx/background_iceAge.png")){
         std::cout<<"failed load backgr\n";success = false;
     }
     if(!gEnterTexture.loadFromFile(gRenderer,"gfx/click2start.png")){

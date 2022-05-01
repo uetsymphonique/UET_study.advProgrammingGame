@@ -37,6 +37,7 @@ class LTexture {
     void setPosY(double y);
     void setHeight(int h);
     void setWidth(int w);
+    void setAngle(double angle);
 
 
     //Renders texture at given point
@@ -54,6 +55,7 @@ class LTexture {
     //The actual hardware texture
     SDL_Texture* mTexture;
   protected:
+    double mAngle = 0.0;
     //Image dimensions
     int mWidth;
     int mHeight;
