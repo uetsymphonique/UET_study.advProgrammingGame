@@ -6,7 +6,7 @@ void Ball::setPosBall(double x,double y) {
     isCharging = false;
     isDown = false;
 }
-void Ball::handleMouseEvent(SDL_Event *e,SDL_Renderer* gRenderer) {
+void Ball::handleMouseEvent(SDL_Event *e,SDL_Renderer* gRenderer,int &swings) {
     int x,y;
     if(e->type==SDL_MOUSEBUTTONDOWN) {
         isDown = true;
@@ -15,8 +15,10 @@ void Ball::handleMouseEvent(SDL_Event *e,SDL_Renderer* gRenderer) {
         initMousePos=Vec2d(x,y);
     }
     if(e->type==SDL_MOUSEBUTTONUP) {
+        if(isCharging){Mix_PlayChannel(-1,gChargeChunk,0);swings++;}
+        isCharging = false;
         isDown = false;
-        Mix_PlayChannel(-1,gChargeChunk,0);
+
     }
     if(isDown&&e->type==SDL_MOUSEMOTION) {
 

@@ -8,7 +8,7 @@ class Ball:public LTexture {
     const double MIN_VEL_OUT_HOLE = 40;
     Ball() {};
     void freeBall();
-    void handleMouseEvent(SDL_Event *e,SDL_Renderer* gRenderer);
+    void handleMouseEvent(SDL_Event *e,SDL_Renderer* gRenderer,int &swings);
     void setPosBall(double x,double y);
     void standardlizePosBall();
     void moveBall(SDL_Rect blockRecList[],int numOfBlocks,

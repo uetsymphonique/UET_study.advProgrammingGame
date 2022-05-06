@@ -51,6 +51,7 @@ class LTexture {
     double getPosY();
     Vec2d getPos();
     SDL_Rect getRect();
+    SDL_Texture* getTexture(){return mTexture;}
   private:
     //The actual hardware texture
     SDL_Texture* mTexture;

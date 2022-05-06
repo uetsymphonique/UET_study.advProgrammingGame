@@ -5,6 +5,7 @@
 #include "Ball.hpp"
 #include "Hole.hpp"
 #include "Teleport.hpp"
+#include "Swamp.hpp"
 Mix_Music *gMusic = NULL;
 bool init(SDL_Window* &gWindow,SDL_Renderer* &gRenderer){
     bool success = true;
@@ -58,6 +59,7 @@ bool loadMedia(LTexture &gBackgroundTexture1,LTexture &gBackgroundTexture2,LText
                Block &block1,Block &block2,Block &block3,Block &block4,
                Block &block1Long,Block &block2Long,Block &block3Long,Block &block4Long,
                Block &block1LongR,Block &block2LongR,Block &block3LongR,Block &block4LongR,
+               Swamp& swamp,
                Teleport &tele1,
                Teleport &tele2,
                TTF_Font* gFont,
@@ -91,6 +93,9 @@ bool loadMedia(LTexture &gBackgroundTexture1,LTexture &gBackgroundTexture2,LText
          std::cout<<"failed load block3Long texture\n";success = false;
     }if(!block4LongR.loadFromFile(gRenderer,"gfx/tile32_lightblue150rotate.png")){
          std::cout<<"failed load block4Long texture\n";success = false;
+    }
+    if(!swamp.loadFromFile(gRenderer,"gfx/swamp.png")){
+         std::cout<<"failed load swamp texture\n";success = false;
     }
 
     if(!ball.loadTextureFromFile(gRenderer,"gfx/ball.png","gfx/point.png",
