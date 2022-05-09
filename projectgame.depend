@@ -67,18 +67,18 @@
 	"params.hpp"
 	"LTexture.hpp"
 
-1651844202 source:c:\users\admin\desktop\advprogrammingbtl\ball_func.cpp
+1651923893 source:c:\users\admin\desktop\advprogrammingbtl\ball_func.cpp
 	"Ball.hpp"
 
-1651843576 c:\users\admin\desktop\advprogrammingbtl\ball.hpp
+1651912050 c:\users\admin\desktop\advprogrammingbtl\ball.hpp
 	"Vec2d.hpp"
 	"LTexture.hpp"
 	"Block.hpp"
 
-1650332247 c:\users\admin\desktop\advprogrammingbtl\vec2d.hpp
+1651912046 c:\users\admin\desktop\advprogrammingbtl\vec2d.hpp
 	"params.hpp"
 
-1651848156 c:\users\admin\desktop\advprogrammingbtl\params.hpp
+1651912050 c:\users\admin\desktop\advprogrammingbtl\params.hpp
 	<iostream>
 	<cmath>
 	<vector>
@@ -92,29 +92,29 @@
 	<ctime>
 	<algorithm>
 
-1651769826 c:\users\admin\desktop\advprogrammingbtl\ltexture.hpp
+1651912050 c:\users\admin\desktop\advprogrammingbtl\ltexture.hpp
 	"params.hpp"
 	"Vec2d.hpp"
 
-1649605014 source:c:\users\admin\desktop\advprogrammingbtl\block_func.cpp
+1651944524 source:c:\users\admin\desktop\advprogrammingbtl\block_func.cpp
 	"Block.hpp"
 
-1650338010 c:\users\admin\desktop\advprogrammingbtl\block.hpp
+1651944548 c:\users\admin\desktop\advprogrammingbtl\block.hpp
 	"params.hpp"
 	"LTexture.hpp"
 
-1650338010 source:c:\users\admin\desktop\advprogrammingbtl\hole_func.cpp
+1651912050 source:c:\users\admin\desktop\advprogrammingbtl\hole_func.cpp
 	"Hole.hpp"
 
-1650338010 c:\users\admin\desktop\advprogrammingbtl\hole.hpp
+1651912050 c:\users\admin\desktop\advprogrammingbtl\hole.hpp
 	"params.hpp"
 	"LTexture.hpp"
 	"Vec2d.hpp"
 
-1651076175 source:c:\users\admin\desktop\advprogrammingbtl\ltexture_func.cpp
+1652005100 source:c:\users\admin\desktop\advprogrammingbtl\ltexture_func.cpp
 	"LTexture.hpp"
 
-1651848361 source:c:\users\admin\desktop\advprogrammingbtl\main.cpp
+1652054492 source:c:\users\admin\desktop\advprogrammingbtl\main.cpp
 	"params.hpp"
 	"Utils.hpp"
 	"LTexture.hpp"
@@ -125,17 +125,17 @@
 	"Vec2d.hpp"
 	"Swamp.hpp"
 
-1651811196 source:c:\users\admin\desktop\advprogrammingbtl\params.cpp
+1651912050 source:c:\users\admin\desktop\advprogrammingbtl\params.cpp
 	"params.hpp"
 
-1650244257 source:c:\users\admin\desktop\advprogrammingbtl\teleport.cpp
+1651912050 source:c:\users\admin\desktop\advprogrammingbtl\teleport.cpp
 	"Teleport.hpp"
 
-1650244306 c:\users\admin\desktop\advprogrammingbtl\teleport.hpp
+1651912050 c:\users\admin\desktop\advprogrammingbtl\teleport.hpp
 	"params.hpp"
 	"LTexture.hpp"
 
-1651829603 c:\users\admin\desktop\advprogrammingbtl\utils.hpp
+1651912050 c:\users\admin\desktop\advprogrammingbtl\utils.hpp
 	"params.hpp"
 	"LTexture.hpp"
 	"Ball.hpp"
@@ -143,15 +143,115 @@
 	"Teleport.hpp"
 	"Swamp.hpp"
 
-1650896586 source:c:\users\admin\desktop\advprogrammingbtl\pairteleports.cpp
+1651912050 source:c:\users\admin\desktop\advprogrammingbtl\pairteleports.cpp
 	"PairTeleports.hpp"
 
-1650896586 c:\users\admin\desktop\advprogrammingbtl\pairteleports.hpp
+1651912050 c:\users\admin\desktop\advprogrammingbtl\pairteleports.hpp
 	"Teleport.hpp"
 
-1651124268 source:c:\users\admin\desktop\advprogrammingbtl\swamp.cpp
+1651912050 source:c:\users\admin\desktop\advprogrammingbtl\swamp.cpp
 	"Swamp.hpp"
 
-1651124309 c:\users\admin\desktop\advprogrammingbtl\swamp.hpp
+1651912050 c:\users\admin\desktop\advprogrammingbtl\swamp.hpp
 	"LTexture.hpp"
+
+1652091640 source:c:\users\admin\desktop\advprogrammingbtl\src\ball_func.cpp
+	"Ball.hpp"
+
+1652091628 c:\users\admin\desktop\advprogrammingbtl\src\ball.hpp
+	"Vec2d.hpp"
+	"LTexture.hpp"
+	"Block.hpp"
+
+1651912046 c:\users\admin\desktop\advprogrammingbtl\src\vec2d.hpp
+	"params.hpp"
+
+1651912050 c:\users\admin\desktop\advprogrammingbtl\src\params.hpp
+	<iostream>
+	<cmath>
+	<vector>
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_ttf.h>
+	<SDL_mixer.h>
+	<numeric>
+	<random>
+	<chrono>
+	<ctime>
+	<algorithm>
+
+1652083620 c:\users\admin\desktop\advprogrammingbtl\src\ltexture.hpp
+	"params.hpp"
+	"Vec2d.hpp"
+
+1651944548 c:\users\admin\desktop\advprogrammingbtl\src\block.hpp
+	"params.hpp"
+	"LTexture.hpp"
+
+1651944524 source:c:\users\admin\desktop\advprogrammingbtl\src\block_func.cpp
+	"Block.hpp"
+
+1651912050 source:c:\users\admin\desktop\advprogrammingbtl\src\hole_func.cpp
+	"Hole.hpp"
+
+1651912050 c:\users\admin\desktop\advprogrammingbtl\src\hole.hpp
+	"params.hpp"
+	"LTexture.hpp"
+	"Vec2d.hpp"
+
+1652005100 source:c:\users\admin\desktop\advprogrammingbtl\src\ltexture_func.cpp
+	"LTexture.hpp"
+
+1651912050 source:c:\users\admin\desktop\advprogrammingbtl\src\pairteleports.cpp
+	"PairTeleports.hpp"
+
+1651912050 c:\users\admin\desktop\advprogrammingbtl\src\pairteleports.hpp
+	"Teleport.hpp"
+
+1651912050 c:\users\admin\desktop\advprogrammingbtl\src\teleport.hpp
+	"params.hpp"
+	"LTexture.hpp"
+
+1651912050 source:c:\users\admin\desktop\advprogrammingbtl\src\params.cpp
+	"params.hpp"
+
+1652084477 source:c:\users\admin\desktop\advprogrammingbtl\src\swamp.cpp
+	"Swamp.hpp"
+
+1652084112 c:\users\admin\desktop\advprogrammingbtl\src\swamp.hpp
+	"LTexture.hpp"
+
+1651912050 source:c:\users\admin\desktop\advprogrammingbtl\src\teleport.cpp
+	"Teleport.hpp"
+
+1652097014 source:c:\users\admin\desktop\advprogrammingbtl\src\main.cpp
+	"params.hpp"
+	"Utils.hpp"
+	"LTexture.hpp"
+	"Ball.hpp"
+	"Hole.hpp"
+	"Block.hpp"
+	"PairTeleports.hpp"
+	"Vec2d.hpp"
+	"InfoBlock.hpp"
+	"Timer.hpp"
+	"Swamp.hpp"
+
+1651912050 c:\users\admin\desktop\advprogrammingbtl\src\utils.hpp
+	"params.hpp"
+	"LTexture.hpp"
+	"Ball.hpp"
+	"Hole.hpp"
+	"Teleport.hpp"
+	"Swamp.hpp"
+
+1652065760 c:\users\admin\desktop\advprogrammingbtl\src\infoblock.hpp
+	"params.hpp"
+	"Vec2d.hpp"
+
+1652094628 source:c:\users\admin\desktop\advprogrammingbtl\src\timer_func.cpp
+	"Timer.hpp"
+
+1652094762 c:\users\admin\desktop\advprogrammingbtl\src\timer.hpp
+	"params.hpp"
 

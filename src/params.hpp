@@ -18,8 +18,8 @@ const int SCREEN_HEIGHT = 640;
 const int NUM_OF_LEVELS = 8;
 const int TIME_BETWEEN_2LEVELS = 6000;
 bool checkCollision( SDL_Rect a, SDL_Rect b ) ;
-bool checkCollisionCircleWithRect(SDL_Rect a_roto,SDL_Rect b_stato);
-struct SDL_PairRect{
+bool checkCollisionCircleWithRect(SDL_Rect a_roto, SDL_Rect b_stato);
+struct SDL_PairRect {
     SDL_Rect rect1;
     SDL_Rect rect2;
 };

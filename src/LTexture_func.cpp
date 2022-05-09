@@ -6,7 +6,7 @@ LTexture::LTexture() {
     mHeight = 0;
 }
 
-LTexture::LTexture(int mW,int mH,SDL_Texture* mT) {
+LTexture::LTexture(int mW, int mH, SDL_Texture* mT) {
     mTexture = mT;
     mWidth = mW;
     mHeight = mH;
@@ -15,7 +15,7 @@ LTexture::~LTexture() {
     free();
 }
 
-bool LTexture::loadFromFile( SDL_Renderer* gRenderer,std::string path ) {
+bool LTexture::loadFromFile( SDL_Renderer* gRenderer, std::string path ) {
     free();
     SDL_Texture* newTexture = NULL;
     SDL_Surface* loadedSurface = IMG_Load( path.c_str() );
@@ -23,7 +23,7 @@ bool LTexture::loadFromFile( SDL_Renderer* gRenderer,std::string path ) {
         printf( "Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
     } else {
         //Color key image
-        SDL_SetColorKey( loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format,0,0xFF,0xFF ) );
+        SDL_SetColorKey( loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0, 0xFF, 0xFF ) );
 
         //Create texture from surface pixels
         newTexture = SDL_CreateTextureFromSurface( gRenderer, loadedSurface );
@@ -44,7 +44,7 @@ bool LTexture::loadFromFile( SDL_Renderer* gRenderer,std::string path ) {
     return mTexture != NULL;
 }
 
-bool LTexture::loadFromRenderedText(SDL_Renderer* &gRenderer,TTF_Font* &gFont, std::string textureText, SDL_Color textColor ) {
+bool LTexture::loadFromRenderedText(SDL_Renderer* &gRenderer, TTF_Font* &gFont, std::string textureText, SDL_Color textColor ) {
     //Get rid of preexisting texture
     free();
 
@@ -96,9 +96,9 @@ void LTexture::setAlpha( Uint8 alpha ) {
     SDL_SetTextureAlphaMod( mTexture, alpha );
 }
 
-void LTexture::render( SDL_Renderer* gRenderer, SDL_Rect* clip, double angle, SDL_Point* center,SDL_RendererFlip flip  ) {
+void LTexture::render( SDL_Renderer* gRenderer, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip  ) {
     //Set rendering space and render to screen
-    if(angle!=0){
+    if(angle != 0) {
         mAngle = angle;
     }
     SDL_Rect renderQuad = { pos.x, pos.y, mWidth, mHeight };
@@ -108,11 +108,11 @@ void LTexture::render( SDL_Renderer* gRenderer, SDL_Rect* clip, double angle, SD
         renderQuad.h = clip->h;
     }
     //Render to screen
-    SDL_RenderCopyEx( gRenderer, mTexture, clip, &renderQuad, mAngle, center,flip );
+    SDL_RenderCopyEx( gRenderer, mTexture, clip, &renderQuad, mAngle, center, flip );
 }
-void LTexture::render( SDL_Renderer* gRenderer, int x, int y, SDL_Rect* clip, double angle, SDL_Point* center,SDL_RendererFlip flip  ) {
+void LTexture::render( SDL_Renderer* gRenderer, int x, int y, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip  ) {
     //Set rendering space and render to screen
-    if(angle!=0){
+    if(angle != 0) {
         mAngle = angle;
     }
     SDL_Rect renderQuad = { x, y, mWidth, mHeight };
@@ -124,7 +124,7 @@ void LTexture::render( SDL_Renderer* gRenderer, int x, int y, SDL_Rect* clip, do
         renderQuad.h = clip->h;
     }
     //Render to screen
-    SDL_RenderCopyEx( gRenderer, mTexture, clip, &renderQuad, mAngle, center,flip );
+    SDL_RenderCopyEx( gRenderer, mTexture, clip, &renderQuad, mAngle, center, flip );
 }
 
 //getter
@@ -144,29 +144,29 @@ double LTexture::getPosY() {
     return pos.y;
 }
 SDL_Rect LTexture::getRect() {
-    SDL_Rect ansRect = {pos.x,pos.y,mWidth,mHeight};
+    SDL_Rect ansRect = {pos.x, pos.y, mWidth, mHeight};
     return ansRect;
 }
 //setter
 void LTexture::setPos(Vec2d p) {
     pos = p;
 }
-void LTexture::setPos (double x,double y) {
-    pos = Vec2d(x,y);
+void LTexture::setPos (double x, double y) {
+    pos = Vec2d(x, y);
 }
 void LTexture::setPosX(double x) {
-    pos.x=x;
+    pos.x = x;
 }
 void LTexture::setPosY(double y) {
-    pos.y=y;
+    pos.y = y;
 }
 void LTexture::setHeight(int h) {
-    mHeight=h;
+    mHeight = h;
 }
 void LTexture::setWidth(int w) {
-    mWidth=w;
+    mWidth = w;
 }
-void LTexture::setAngle(double angle){
+void LTexture::setAngle(double angle) {
     mAngle = angle;
 }
 

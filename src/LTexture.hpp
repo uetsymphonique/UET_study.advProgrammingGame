@@ -7,16 +7,16 @@ class LTexture {
   public:
     //constructor
     LTexture();
-    LTexture(int mW,int mH,SDL_Texture* mT);
+    LTexture(int mW, int mH, SDL_Texture* mT);
 
     //Deallocates memory
     ~LTexture();
 
     //Loads image
-    bool loadFromFile(SDL_Renderer* gRenderer,std::string path);
+    bool loadFromFile(SDL_Renderer* gRenderer, std::string path);
 
     //Creates image from font string
-    bool loadFromRenderedText(SDL_Renderer* &gRenderer,TTF_Font* &gFont, std::string textureText, SDL_Color textColor );
+    bool loadFromRenderedText(SDL_Renderer* &gRenderer, TTF_Font* &gFont, std::string textureText, SDL_Color textColor );
 
     //Deallocates texture
     void free();
@@ -32,7 +32,7 @@ class LTexture {
 
     //Set pos
     void setPos(Vec2d p);
-    void setPos (double x,double y);
+    void setPos (double x, double y);
     void setPosX(double x);
     void setPosY(double y);
     void setHeight(int h);
@@ -41,8 +41,8 @@ class LTexture {
 
 
     //Renders texture at given point
-    void render( SDL_Renderer* gRenderer, SDL_Rect* clip = NULL, double angle = 0.0, SDL_Point* center = NULL,SDL_RendererFlip flip = SDL_FLIP_NONE );
-    void render( SDL_Renderer* gRenderer, int x, int y, SDL_Rect* clip = NULL, double angle = 0.0, SDL_Point* center = NULL,SDL_RendererFlip flip = SDL_FLIP_NONE );
+    void render( SDL_Renderer* gRenderer, SDL_Rect* clip = NULL, double angle = 0.0, SDL_Point* center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE );
+    void render( SDL_Renderer* gRenderer, int x, int y, SDL_Rect* clip = NULL, double angle = 0.0, SDL_Point* center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE );
 
     //Gets image informations
     int getWidth();
@@ -51,7 +51,12 @@ class LTexture {
     double getPosY();
     Vec2d getPos();
     SDL_Rect getRect();
-    SDL_Texture* getTexture(){return mTexture;}
+    SDL_Texture* getTexture() {
+        return mTexture;
+    }
+    double getAngle(){
+        return mAngle;
+    }
   private:
     //The actual hardware texture
     SDL_Texture* mTexture;

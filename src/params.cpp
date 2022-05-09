@@ -38,7 +38,7 @@ bool checkCollision( SDL_Rect a, SDL_Rect b ) {
     //If none of the sides from A are outside B
     return 1;
 }
-bool checkCollisionCircleWithRect(SDL_Rect a_roto,SDL_Rect b_stato){
+bool checkCollisionCircleWithRect(SDL_Rect a_roto, SDL_Rect b_stato) {
     int leftA, leftB;
     int rightA, rightB;
     int topA, topB;
@@ -56,8 +56,8 @@ bool checkCollisionCircleWithRect(SDL_Rect a_roto,SDL_Rect b_stato){
     topB = b_stato.y;
     bottomB = b_stato.y + b_stato.h;
 
-    double centerAx = (rightA+leftA)/2.0;
-    double centerAy = (topA+bottomA)/2.0;
+    double centerAx = (rightA + leftA) / 2.0;
+    double centerAy = (topA + bottomA) / 2.0;
 
     if( centerAy <= topB ) {
         return 0;
