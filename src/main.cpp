@@ -11,6 +11,20 @@
 #include "Swamp.hpp"
 using namespace std;
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+enum TYPE_BLOCK{
+    BLOCK1,
+    BLOCK2,
+    BLOCK3,
+    BLOCK4,
+    BLOCK1LONG,
+    BLOCK2LONG,
+    BLOCK3LONG,
+    BLOCK4LONG,
+    BLOCK1LONGR,
+    BLOCK2LONGR,
+    BLOCK3LONGR,
+    BLOCK4LONGR,
+};
 int main(int argc, char* argv[]) {
     SDL_Window* gWindow = NULL;
     SDL_Renderer* gRenderer = NULL;
@@ -51,9 +65,10 @@ int main(int argc, char* argv[]) {
 
     bool hasSwamp = false;
     Swamp swamp;
-    SDL_Rect swampRectList[1];
+    vector<SDL_Rect>swampRectList;
     bool isSwamped = false;
     Timer swampedBallTimer;
+    int countSwamp = 0;
 
     bool hasWind = false;
 
@@ -142,7 +157,7 @@ int main(int argc, char* argv[]) {
 //                            blockList[i].free();
 //                        }
                         //switch(levels[indexLevel]) {
-                        switch(2) {
+                        switch(levels[indexLevel]) {
                         case 0: { //normal
                             hasTeleport = false;
                             hasSwamp = false;
@@ -151,16 +166,12 @@ int main(int argc, char* argv[]) {
                             levels.erase(levels.begin() + indexLevel);
                             gBackgroundTexture = gBackgroundTexture1;
                             ball.setPosBall(200, 600);
-                            blockList.resize(4);
+                            blockList.resize(2);
                             cout << blockList.size() << '\n';
-                            blockList[0] = InfoBlock(90, 130, 0);
-                            blockList[1] = InfoBlock(90 + 32, 130, 0);
-                            blockList[2] = InfoBlock(190, 130, 0);
-                            blockList[3] = InfoBlock(190 + 32, 130, 0);
-                            blockRectList[0] = {90, 130, 32, 32};
-                            blockRectList[1] = {90 + 32, 130, 32, 32};
-                            blockRectList[2] = {190, 130, 32, 32};
-                            blockRectList[3] = {190 + 32, 130, 32, 32};
+                            blockList[0] = InfoBlock(50, 130, BLOCK1LONGR);
+                            blockList[1] = InfoBlock(280, 130, BLOCK1LONGR);
+                            blockRectList[0] = {50, 130, 147, 32};
+                            blockRectList[1] = {280, 130, 147, 32};
                             hole.setPos(200, 100);
                         }
                         break;
@@ -169,15 +180,15 @@ int main(int argc, char* argv[]) {
                             hasSwamp = false;
                             hasWind = false;
                             hasIce = false;
-                            //levels.erase(levels.begin() + indexLevel);
+                            levels.erase(levels.begin() + indexLevel);
                             gBackgroundTexture = gBackgroundTexture1;
                             ball.setPosBall(240, 610);
                             blockList.resize(2);
                             cout << blockList.size() << '\n';
-                            blockList[0] = InfoBlock(100, 150, 8);
+                            blockList[0] = InfoBlock(100, 150, BLOCK1LONGR);
                             blockRectList[0] = {100, 150, 147, 32};
-                            blockList[1] = InfoBlock(100 + 147 - 32, 150 - 147, 8);
-                            blockRectList[1] = {100 + 147 - 32, 150 - 147, 32, 147};
+                            blockList[1] = InfoBlock(300, 50, BLOCK1LONG);
+                            blockRectList[1] = {300, 50, 32, 147};
                             hole.setPos(150, 110);
                         }
                         break;
@@ -186,7 +197,32 @@ int main(int argc, char* argv[]) {
                             hasSwamp = true;
                             hasWind = false;
                             hasIce = false;
-                            //levels.erase(levels.begin() + indexLevel);
+                            levels.erase(levels.begin() + indexLevel);
+                            gBackgroundTexture = gBackgroundTexture2;
+                            ball.setPosBall(200, 610);
+                            blockList.resize(4);
+                            cout << blockList.size() << '\n';
+                            blockList[0] = InfoBlock(200, 500, BLOCK2);
+                            blockRectList[0] = {200, 500, 32, 32};
+                            blockList[1] = InfoBlock(400, 500, BLOCK2);
+                            blockRectList[1] = {400, 500, 32, 32};
+                            blockList[2] = InfoBlock(400, 200, BLOCK2LONG);
+                            blockRectList[2] = {400, 200, 32, 147};
+                            blockList[3] = InfoBlock(60, 120, BLOCK2LONGR);
+                            blockRectList[3] = {60, 120, 147, 32};
+                            swampRectList.resize(3);
+                            swampRectList[0] = {50, 320, 64, 64};
+                            swampRectList[1] = {300, 160, 64, 64};
+                            swampRectList[2] = {120, 320, 64, 64};
+                            hole.setPos(100, 200);
+                        }
+                        break;
+                        case 3: { //sandy
+                            hasTeleport = false;
+                            hasSwamp = true;
+                            hasWind = false;
+                            hasIce = false;
+                            levels.erase(levels.begin() + indexLevel);
                             gBackgroundTexture = gBackgroundTexture2;
                             ball.setPosBall(240, 610);
                             blockList.resize(3);
@@ -197,25 +233,10 @@ int main(int argc, char* argv[]) {
                             blockRectList[1] = {400, 200, 32, 147};
                             blockList[2] = InfoBlock(200, 610, 1);
                             blockRectList[2] = {200, 610, 32, 32};
-                            swamp.setPos(150, 150);
+                            swampRectList.resize(2);
                             swampRectList[0] = {150, 150, 64, 64};
-                            hole.setPos(150, 110);
-                        }
-                        break;
-                        case 3: { //sandy
-                            hasTeleport = false;
-                            hasSwamp = true;
-                            hasWind = false;
-                            hasIce = false;
-                            levels.erase(levels.begin() + indexLevel);
-                            gBackgroundTexture = gBackgroundTexture1;
-                            ball.setPosBall(240, 610);
-                            blockList.resize(3);
-                            cout << blockList.size() << '\n';
-                            blockList[0] = InfoBlock(100, 150, 4);
-                            blockRectList[0] = {100, 150, 147, 32};
-                            blockList[1] = InfoBlock(100 + 147 - 32, 150 - 147, 4);
-                            blockRectList[1] = {100 + 147 - 32, 150 - 147, 32, 147};
+                            swampRectList[1] = {150, 250, 64, 64};
+                            swampRectList[2] = {250, 250, 64, 64};
                             hole.setPos(150, 110);
 
                         }
@@ -292,7 +313,7 @@ int main(int argc, char* argv[]) {
                             tele2.setPos(100, 580);
                             pairTeleRectList[0].rect1 = tele1.getRect();
                             pairTeleRectList[0].rect2 = tele2.getRect();
-                            gBackgroundTexture = gBackgroundTexture4;
+                            gBackgroundTexture = gBackgroundTexture3;
                             ball.setPosBall(330, 610);
                             blockList.resize(18);
                             cout << blockList.size() << '\n';
@@ -345,12 +366,25 @@ int main(int argc, char* argv[]) {
                         gameTimer.updateTime();
                         gBackgroundTexture.render(gRenderer, 0, 0);
                         gSwingsTextTexture.render(gRenderer);
-                        ball.setAlpha(255);
+                        if(!isSwamped) swampedBallTimer.updateTime();
+                        if(!isSwamped||(isSwamped&&swampedBallTimer.distanceTime()>4000)){
+                            if(isSwamped) {
+                                ball.setPosBall(ball.getPosBeforeSwing().x,ball.getPosBeforeSwing().y);
+                            }
+                            isSwamped = false;
+                            ball.setAlpha(255);
+                            ball.moveBall(blockRectList, blockList.size(), pairTeleRectList, 1,
+                                      swampRectList, isSwamped,
+                                      hasSwamp, hasTeleport, hasWind, hasIce);
+                        }
+                        else{
+                            ball.turnAround();
+                            ball.setAlpha(255-swampedBallTimer.distanceTime()*255/4000);
+                        }
+
                         ball.renderBall(gRenderer);
                         hole.render(gRenderer);
-                        ball.moveBall(blockRectList, blockList.size(), pairTeleRectList, 1,
-                                      swampRectList, 1, isSwamped,
-                                      hasSwamp, hasTeleport, hasWind, hasIce);
+
                         for(int i = 0; i < blockList.size(); i++) {
                             blocks[blockList[i].typeBlock].render(gRenderer, blockList[i].pos.x, blockList[i].pos.y);
                         }
@@ -359,7 +393,9 @@ int main(int argc, char* argv[]) {
                             tele2.render(gRenderer);
                         }
                         if(hasSwamp) {
-                            swamp.render(gRenderer);
+                            for(int i = 0; i< swampRectList.size(); i++){
+                                swamp.render(gRenderer,swampRectList[i].x,swampRectList[i].y);
+                            }
                             swamp.rotateSwamp();
                         }
                         holeRect = hole.getRect();
@@ -420,7 +456,9 @@ int main(int argc, char* argv[]) {
                             tele2.render(gRenderer);
                         }
                         if(hasSwamp) {
-                            swamp.render(gRenderer);
+                            for(int i = 0; i< swampRectList.size(); i++){
+                                swamp.render(gRenderer,swampRectList[i].x,swampRectList[i].y);
+                            }
                             swamp.rotateSwamp();
                         }
                     }

@@ -5,6 +5,7 @@
 #include "Block.hpp"
 class Ball: public LTexture {
   public:
+    int countTurnAround = 0;
     const double MIN_VEL_OUT_HOLE = 40;
     Ball() {};
     void freeBall();
@@ -13,13 +14,15 @@ class Ball: public LTexture {
     void standardlizePosBall();
     void moveBall(SDL_Rect blockRecList[], int numOfBlocks,
                   SDL_PairRect pairTeleRectList[], int numOfPairsTele,
-                  SDL_Rect swampRectList[], int numOfSwamps, bool& isSwamped,
+                  vector<SDL_Rect> swampRectList, bool& isSwamped,
                   bool hasSwamp = false, bool hasTeleport = false, bool hasWind = false, bool hasIce = false);
     void renderBall(SDL_Renderer* gRenderer);
     bool loadTextureFromFile(SDL_Renderer* gRenderer, std::string ballpath, std::string directpath,
                              std::string powerMeterBgPath, std::string powerMeterFgPath, std::string powerMeterOverlayPath,
                              std::string chargeMusicPath);
     double getScaleVelocity();
+    Vec2d getPosBeforeSwing();
+    void turnAround();
   private:
     static const int BALL_WIDTH = 16;
     static const int BALL_HEIGHT = 16;
@@ -48,5 +51,7 @@ class Ball: public LTexture {
 
     //pos before each swing
     Vec2d posBeforeSwing;
+
+
 };
 #endif // BALLCLASS__

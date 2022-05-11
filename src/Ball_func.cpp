@@ -24,6 +24,7 @@ void Ball::handleMouseEvent(SDL_Event *e, SDL_Renderer* gRenderer, int &swings) 
 
     }
     if(isDown && e->type == SDL_MOUSEMOTION) {
+        countTurnAround = 0;
         posBeforeSwing = getPos();
         isCharging = true;
         SDL_GetMouseState(&x, &y);
@@ -47,10 +48,10 @@ void Ball::handleMouseEvent(SDL_Event *e, SDL_Renderer* gRenderer, int &swings) 
 }
 void Ball::moveBall(SDL_Rect blockRectList[], int numOfBlocks,
                     SDL_PairRect pairTeleRectList[], int numOfPairsTele,
-                    SDL_Rect swampRectList[], int numOfSwamps, bool& isSwamped,
+                    vector<SDL_Rect> swampRectList, bool& isSwamped,
                     bool hasSwamp, bool hasTeleport, bool hasWind, bool hasIce) {
     if(!isCharging) {
-
+        //std::cout<<pos.x<<" "<<pos.y<<'\n';
         Vec2d v = velocBall;
         bool collisionX = false;
         bool collisionY = false;
@@ -64,51 +65,59 @@ void Ball::moveBall(SDL_Rect blockRectList[], int numOfBlocks,
         //check collision with blocks and walls
 
         //collision made by only change of x
-        ballRect.x += velocBall.x;
-        if(ballRect.x + BALL_WIDTH >= SCREEN_WIDTH) {
-            velocBall = Vec2d(SCREEN_WIDTH - rightBall, (SCREEN_WIDTH - rightBall) / ratioVeloc);
-            collisionX = true;
-        } else if(ballRect.x <= 0) {
-            velocBall = Vec2d(0 - leftBall, (0 - leftBall) / ratioVeloc);
-            collisionX = true;
-        } else {
-            for(int i = 0; i < numOfBlocks; i++) {
-                if(checkCollision(ballRect, blockRectList[i])) {
-                    collisionX = true;
-                    if(velocBall.x > 0) {
-                        velocBall = Vec2d(blockRectList[i].x - rightBall, (blockRectList[i].x - rightBall) / ratioVeloc);
-                    } else {
-                        velocBall = Vec2d(blockRectList[i].x + blockRectList[i].w - leftBall, (blockRectList[i].x + blockRectList[i].w - leftBall) / ratioVeloc);
+        if(abs(velocBall.x)>=0.3){
+            ballRect.x += velocBall.x;
+            if(ballRect.x + BALL_WIDTH >= SCREEN_WIDTH) {
+                velocBall = Vec2d(SCREEN_WIDTH - rightBall, (SCREEN_WIDTH - rightBall) / ratioVeloc);
+                collisionX = true;
+            } else if(ballRect.x <= 0) {
+                velocBall = Vec2d(0 - leftBall, (0 - leftBall) / ratioVeloc);
+                collisionX = true;
+            } else {
+                for(int i = 0; i < numOfBlocks; i++) {
+                    if(checkCollision(ballRect, blockRectList[i])) {
+                        collisionX = true;
+                        if(velocBall.x > 0) {
+                            velocBall = Vec2d(blockRectList[i].x - rightBall , (blockRectList[i].x - rightBall) / ratioVeloc);
+                            std::cout<<"velocity: "<<velocBall.x<<" "<<velocBall.y<<'\n';
+                        } else if(velocBall.x < 0){
+                            velocBall = Vec2d(blockRectList[i].x + blockRectList[i].w - leftBall, (blockRectList[i].x + blockRectList[i].w - leftBall) / ratioVeloc);
+                            std::cout<<"velocity: "<<velocBall.x<<" "<<velocBall.y<<'\n';
+                        }
+                        break;
                     }
-                    break;
                 }
             }
         }
+
         //collision made by only change of y
         ballRect.x = leftBall;
-        ballRect.y += velocBall.y;
-        if(ballRect.y + BALL_HEIGHT >= SCREEN_HEIGHT) {
-            velocBall = Vec2d((SCREEN_HEIGHT - bottomBall) * ratioVeloc, SCREEN_HEIGHT - bottomBall);
-            collisionY = true;
-        } else if(ballRect.y <= 0) {
-            velocBall = Vec2d((0 - topBall) * ratioVeloc, 0 - topBall);
-            collisionY = true;
-        } else {
-            for(int i = 0; i < numOfBlocks; i++) {
-                if(checkCollision(ballRect, blockRectList[i])) {
-                    if(velocBall.y > 0) {
-                        velocBall = Vec2d((blockRectList[i].y - bottomBall) * ratioVeloc, blockRectList[i].y - bottomBall);
-                    } else {
-                        velocBall = Vec2d((blockRectList[i].y + blockRectList[i].h - topBall) * ratioVeloc, blockRectList[i].y + blockRectList[i].h - topBall);
+        if(abs(velocBall.y)>=0.3){
+            ballRect.y += velocBall.y;
+            if(ballRect.y + BALL_HEIGHT >= SCREEN_HEIGHT) {
+                velocBall = Vec2d((SCREEN_HEIGHT - bottomBall) * ratioVeloc, SCREEN_HEIGHT - bottomBall);
+                collisionY = true;
+            } else if(ballRect.y <= 0) {
+                velocBall = Vec2d((0 - topBall) * ratioVeloc, 0 - topBall);
+                collisionY = true;
+            } else {
+                for(int i = 0; i < numOfBlocks; i++) {
+                    if(checkCollision(ballRect, blockRectList[i])) {
+                        if(velocBall.y > 0) {
+                            velocBall = Vec2d((blockRectList[i].y - bottomBall) * ratioVeloc, blockRectList[i].y - bottomBall);
+                        } else {
+                            velocBall = Vec2d((blockRectList[i].y + blockRectList[i].h - topBall) * ratioVeloc, blockRectList[i].y + blockRectList[i].h - topBall);
+                        }
+                        collisionY = true;
+                        break;
                     }
-                    collisionY = true;
-                    break;
                 }
             }
         }
+
         //collision made by x and y change
         ballRect.x += velocBall.x;
-        if(!collisionX && !collisionY) {
+        if(!collisionX && !collisionY && (abs(velocBall.x)>=0.2 || abs(velocBall.y)>=0.2)) {
             for(int i = 0; i < numOfBlocks; i++) {
                 if(checkCollision(ballRect, blockRectList[i])) {
                     Vec2d v1;
@@ -181,11 +190,11 @@ void Ball::moveBall(SDL_Rect blockRectList[], int numOfBlocks,
 
         }
 
-        if(hasSwamp){
-            for(int i = 0 ;i<numOfSwamps;i++){
-                if(checkCollisionCircleWithRect(getRect(),swampRectList[i])){
-                    setPosBall(posBeforeSwing.x,posBeforeSwing.y);
+        if(hasSwamp) {
+            for(int i = 0 ; i < swampRectList.size(); i++) {
+                if(checkCollisionCircleWithRect(getRect(), swampRectList[i])) {
                     isSwamped = true;
+                    setPosBall(swampRectList[i].x + swampRectList[i].w / 2.0 - BALL_WIDTH / 2, swampRectList[i].y + swampRectList[i].h / 2.0 - BALL_HEIGHT / 2);
                     break;
                 }
             }
@@ -257,4 +266,23 @@ void Ball::freeBall() {
 
 double Ball::getScaleVelocity() {
     return velocBall.getScale();
+}
+Vec2d Ball::getPosBeforeSwing() {
+    return posBeforeSwing;
+}
+void Ball::turnAround() {
+    if(countTurnAround == 0) {
+        pos.x -= 5;
+    }
+    if(countTurnAround == 6) {
+        pos.y -= 5;
+    }
+    if(countTurnAround == 12) {
+        pos.x += 5;
+    }
+    if(countTurnAround == 18) {
+        pos.y += 5;
+    }
+    countTurnAround++;
+    countTurnAround %= 19;
 }
