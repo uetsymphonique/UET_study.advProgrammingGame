@@ -50,7 +50,7 @@ void Ball::moveBall(SDL_Rect blockRectList[], int numOfBlocks,
                     SDL_PairRect pairTeleRectList[], int numOfPairsTele,
                     vector<SDL_Rect> swampRectList, bool& isSwamped,
                     bool hasSwamp, bool hasTeleport, bool hasWind, bool hasIce) {
-    if(!isCharging) {
+    if(!isCharging && (abs(velocBall.y) >= 0.2 || abs(velocBall.x) >= 0.2)) {
         //std::cout<<pos.x<<" "<<pos.y<<'\n';
         Vec2d v = velocBall;
         bool collisionX = false;
@@ -65,7 +65,7 @@ void Ball::moveBall(SDL_Rect blockRectList[], int numOfBlocks,
         //check collision with blocks and walls
 
         //collision made by only change of x
-        if(abs(velocBall.x)>=0.3){
+        if(abs(velocBall.x) >= 0.4) {
             ballRect.x += velocBall.x;
             if(ballRect.x + BALL_WIDTH >= SCREEN_WIDTH) {
                 velocBall = Vec2d(SCREEN_WIDTH - rightBall, (SCREEN_WIDTH - rightBall) / ratioVeloc);
@@ -78,11 +78,12 @@ void Ball::moveBall(SDL_Rect blockRectList[], int numOfBlocks,
                     if(checkCollision(ballRect, blockRectList[i])) {
                         collisionX = true;
                         if(velocBall.x > 0) {
-                            velocBall = Vec2d(blockRectList[i].x - rightBall , (blockRectList[i].x - rightBall) / ratioVeloc);
-                            std::cout<<"velocity: "<<velocBall.x<<" "<<velocBall.y<<'\n';
-                        } else if(velocBall.x < 0){
-                            velocBall = Vec2d(blockRectList[i].x + blockRectList[i].w - leftBall, (blockRectList[i].x + blockRectList[i].w - leftBall) / ratioVeloc);
-                            std::cout<<"velocity: "<<velocBall.x<<" "<<velocBall.y<<'\n';
+                            velocBall = Vec2d(blockRectList[i].x - pos.x - BALL_WIDTH - 2,
+                                              (blockRectList[i].x - pos.x - BALL_WIDTH - 2) / ratioVeloc);
+                            std::cout << "velocity: " << velocBall.x << " " << velocBall.y << '\n';
+                        } else if(velocBall.x < 0) {
+                            velocBall = Vec2d(blockRectList[i].x + blockRectList[i].w - pos.x + 2, (blockRectList[i].x + blockRectList[i].w - pos.x + 2) / ratioVeloc);
+                            std::cout << "velocity: " << velocBall.x << " " << velocBall.y << '\n';
                         }
                         break;
                     }
@@ -92,21 +93,22 @@ void Ball::moveBall(SDL_Rect blockRectList[], int numOfBlocks,
 
         //collision made by only change of y
         ballRect.x = leftBall;
-        if(abs(velocBall.y)>=0.3){
+        if(abs(velocBall.y) >= 0.4) {
             ballRect.y += velocBall.y;
             if(ballRect.y + BALL_HEIGHT >= SCREEN_HEIGHT) {
-                velocBall = Vec2d((SCREEN_HEIGHT - bottomBall) * ratioVeloc, SCREEN_HEIGHT - bottomBall);
+                velocBall = Vec2d((SCREEN_HEIGHT - (pos.y + BALL_HEIGHT)) * ratioVeloc, SCREEN_HEIGHT - (pos.y + BALL_HEIGHT));
                 collisionY = true;
             } else if(ballRect.y <= 0) {
-                velocBall = Vec2d((0 - topBall) * ratioVeloc, 0 - topBall);
+                velocBall = Vec2d((0 - pos.y) * ratioVeloc, 0 - pos.y);
                 collisionY = true;
             } else {
                 for(int i = 0; i < numOfBlocks; i++) {
                     if(checkCollision(ballRect, blockRectList[i])) {
                         if(velocBall.y > 0) {
-                            velocBall = Vec2d((blockRectList[i].y - bottomBall) * ratioVeloc, blockRectList[i].y - bottomBall);
+                            velocBall = Vec2d((blockRectList[i].y - (pos.y + BALL_HEIGHT) - 2) * ratioVeloc, blockRectList[i].y - (pos.y + BALL_HEIGHT) - 2);
                         } else {
-                            velocBall = Vec2d((blockRectList[i].y + blockRectList[i].h - topBall) * ratioVeloc, blockRectList[i].y + blockRectList[i].h - topBall);
+                            velocBall = Vec2d((blockRectList[i].y + blockRectList[i].h - pos.y + 2) * ratioVeloc,
+                                              blockRectList[i].y + blockRectList[i].h - pos.y + 2);
                         }
                         collisionY = true;
                         break;
@@ -117,14 +119,16 @@ void Ball::moveBall(SDL_Rect blockRectList[], int numOfBlocks,
 
         //collision made by x and y change
         ballRect.x += velocBall.x;
-        if(!collisionX && !collisionY && (abs(velocBall.x)>=0.2 || abs(velocBall.y)>=0.2)) {
+        if(!collisionX && !collisionY ) {
             for(int i = 0; i < numOfBlocks; i++) {
                 if(checkCollision(ballRect, blockRectList[i])) {
                     Vec2d v1;
                     if(velocBall.y > 0) {
-                        v1 = Vec2d((blockRectList[i].y - bottomBall) * ratioVeloc, blockRectList[i].y - bottomBall);
+                        v1 = Vec2d((blockRectList[i].y - (pos.y + BALL_HEIGHT) - 2) * ratioVeloc,
+                                   blockRectList[i].y - (pos.y + BALL_HEIGHT) - 2);
                     } else {
-                        v1 = Vec2d((blockRectList[i].y + blockRectList[i].h - topBall) * ratioVeloc, blockRectList[i].y + blockRectList[i].h - topBall);
+                        v1 = Vec2d((blockRectList[i].y + blockRectList[i].h - pos.y + 2) * ratioVeloc,
+                                   blockRectList[i].y + blockRectList[i].h - pos.y + 2);
                     }
                     SDL_Rect tempBallRect = getRect();
                     tempBallRect.x += velocBall.x;
@@ -134,9 +138,11 @@ void Ball::moveBall(SDL_Rect blockRectList[], int numOfBlocks,
                     }
                     Vec2d v2;
                     if(velocBall.x > 0) {
-                        v2 = Vec2d(blockRectList[i].x - rightBall, (blockRectList[i].x - rightBall) / ratioVeloc);
+                        v2 = Vec2d(blockRectList[i].x - (pos.x + BALL_WIDTH) - 2,
+                                   (blockRectList[i].x - (pos.x + BALL_WIDTH) - 2) / ratioVeloc);
                     } else {
-                        v2 = Vec2d(blockRectList[i].x + blockRectList[i].w - leftBall, (blockRectList[i].x + blockRectList[i].w - leftBall) / ratioVeloc);
+                        v2 = Vec2d(blockRectList[i].x + blockRectList[i].w - pos.x + 2,
+                                   (blockRectList[i].x + blockRectList[i].w - pos.x + 2) / ratioVeloc);
                     }
                     tempBallRect = getRect();
                     tempBallRect.x += velocBall.x;
