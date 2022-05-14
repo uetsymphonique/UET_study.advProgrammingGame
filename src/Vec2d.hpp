@@ -12,5 +12,15 @@ struct Vec2d {
     double getRatio() {
         return x / y;
     }
+    Vec2d operator+(Vec2d other){
+        return {x+other.x,y+other.y};
+    }
+    Vec2d operator/(double d){
+        return {x/d,y/d};
+    }
+    double estimateAngle(Vec2d other){
+
+    }
 };
+
 #endif // VEC2D__

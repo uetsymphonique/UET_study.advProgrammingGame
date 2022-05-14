@@ -46,131 +46,185 @@ void Ball::handleMouseEvent(SDL_Event *e, SDL_Renderer* gRenderer, int &swings) 
         isCharging = false;
     }
 }
+bool Ball::checkCollisionWithDirect(SDL_Rect blockRect) {
+    int posWithBlock = posBallWithBlock(blockRect);
+    switch(posWithBlock) {
+    case TOP_MID: {
+
+    } break;
+    }
+}
 void Ball::moveBall(SDL_Rect blockRectList[], int numOfBlocks,
                     SDL_PairRect pairTeleRectList[], int numOfPairsTele,
                     vector<SDL_Rect> swampRectList, bool& isSwamped,
                     bool hasSwamp, bool hasTeleport, bool hasWind, bool hasIce) {
-    if(!isCharging && (abs(velocBall.y) >= 0.2 || abs(velocBall.x) >= 0.2)) {
-        //std::cout<<pos.x<<" "<<pos.y<<'\n';
-        Vec2d v = velocBall;
+
+    if(!isCharging) {
+        if(abs(velocBall.y) <= 0.0001) {
+            if(velocBall.y >= 0) velocBall.y = 0.0001;
+            else velocBall.y = -0.0001;
+        }
+        Vec2d tempPos = pos + velocBall;
         bool collisionX = false;
         bool collisionY = false;
-        SDL_Rect ballRect = getRect();
-        int leftBall, rightBall, topBall, bottomBall;
-        leftBall = ballRect.x;
-        rightBall = leftBall + ballRect.w;
-        topBall = ballRect.y;
-        bottomBall = topBall + ballRect.h;
-        double ratioVeloc = velocBall.getRatio();
-        //check collision with blocks and walls
-
-        //collision made by only change of x
-        if(abs(velocBall.x) >= 0.4) {
-            ballRect.x += velocBall.x;
-            if(ballRect.x + BALL_WIDTH >= SCREEN_WIDTH) {
-                velocBall = Vec2d(SCREEN_WIDTH - rightBall, (SCREEN_WIDTH - rightBall) / ratioVeloc);
-                collisionX = true;
-            } else if(ballRect.x <= 0) {
-                velocBall = Vec2d(0 - leftBall, (0 - leftBall) / ratioVeloc);
-                collisionX = true;
-            } else {
-                for(int i = 0; i < numOfBlocks; i++) {
-                    if(checkCollision(ballRect, blockRectList[i])) {
-                        collisionX = true;
-                        if(velocBall.x > 0) {
-                            velocBall = Vec2d(blockRectList[i].x - pos.x - BALL_WIDTH - 2,
-                                              (blockRectList[i].x - pos.x - BALL_WIDTH - 2) / ratioVeloc);
-                            std::cout << "velocity: " << velocBall.x << " " << velocBall.y << '\n';
-                        } else if(velocBall.x < 0) {
-                            velocBall = Vec2d(blockRectList[i].x + blockRectList[i].w - pos.x + 2, (blockRectList[i].x + blockRectList[i].w - pos.x + 2) / ratioVeloc);
-                            std::cout << "velocity: " << velocBall.x << " " << velocBall.y << '\n';
-                        }
-                        break;
+        bool moved = false;
+        //collision with wall
+        if(tempPos.x <= 0) {
+            pos.x = 0;
+            moved = true;
+            velocBall.x *= -1.0;
+        }
+        if(tempPos.x + BALL_WIDTH >= SCREEN_WIDTH) {
+            pos.x = SCREEN_WIDTH - BALL_WIDTH;
+            moved = true;
+            velocBall.x *= -1.0;
+        }
+        if(tempPos.y <= 0) {
+            pos.y = 0;
+            moved = true;
+            velocBall.y *= -1.0;
+        }
+        if(tempPos.y + BALL_HEIGHT >= SCREEN_HEIGHT) {
+            pos.y = SCREEN_HEIGHT - BALL_HEIGHT;
+            moved = true;
+            velocBall.y *= -1.0;
+        }
+        SDL_FloatRect tempRect = SDL_FloatRect(tempPos.x, tempPos.y, BALL_WIDTH, BALL_HEIGHT);
+        bool hasCollision = false;
+        for(int i = 0; i < numOfBlocks; i++) {
+            if(checkCollision(tempRect, blockRectList[i])) {
+                std::cout << "found collision\n";
+                int topBlock = blockRectList[i].y;
+                int botBlock = blockRectList[i].y + blockRectList[i].h;
+                int leftBlock = blockRectList[i].x;
+                int rightBlock = blockRectList[i].x + blockRectList[i].w;
+                double ratioV = velocBall.getRatio();
+                std::cerr << "posBallWithBlock: " << posBallWithBlock(blockRectList[i]) << '\n';
+                moved = true;
+                switch(posBallWithBlock(blockRectList[i])) {
+                case TOP_MID: {
+                    if(velocBall.y >= 0) {
+                        pos.x += (topBlock - BALL_HEIGHT - pos.y) * ratioV;
+                        pos.y = topBlock - BALL_HEIGHT;
+                        velocBall.y *= -1.0;
                     }
                 }
-            }
-        }
-
-        //collision made by only change of y
-        ballRect.x = leftBall;
-        if(abs(velocBall.y) >= 0.4) {
-            ballRect.y += velocBall.y;
-            if(ballRect.y + BALL_HEIGHT >= SCREEN_HEIGHT) {
-                velocBall = Vec2d((SCREEN_HEIGHT - (pos.y + BALL_HEIGHT)) * ratioVeloc, SCREEN_HEIGHT - (pos.y + BALL_HEIGHT));
-                collisionY = true;
-            } else if(ballRect.y <= 0) {
-                velocBall = Vec2d((0 - pos.y) * ratioVeloc, 0 - pos.y);
-                collisionY = true;
-            } else {
-                for(int i = 0; i < numOfBlocks; i++) {
-                    if(checkCollision(ballRect, blockRectList[i])) {
-                        if(velocBall.y > 0) {
-                            velocBall = Vec2d((blockRectList[i].y - (pos.y + BALL_HEIGHT) - 2) * ratioVeloc, blockRectList[i].y - (pos.y + BALL_HEIGHT) - 2);
+                break;
+                case BOT_MID: {
+                    if(velocBall.y <= 0) {
+                        pos.x += (botBlock - pos.y) * ratioV;
+                        pos.y = botBlock;
+                        velocBall.y *= -1.0;
+                    }
+                }
+                break;
+                case MID_LEFT: {
+                    if(velocBall.x >= 0) {
+                        pos.y += (leftBlock - BALL_WIDTH - pos.x) / ratioV;
+                        pos.x = leftBlock - BALL_WIDTH;
+                        velocBall.x *= -1.0;
+                    }
+                }
+                break;
+                case MID_RIGHT: {
+                    if(velocBall.x <= 0) {
+                        pos.y += (rightBlock - pos.x) / ratioV;
+                        pos.x = rightBlock;
+                        velocBall.x *= -1.0;
+                    }
+                }
+                break;
+                case TOP_LEFT: {
+                    if(velocBall.x >= 0 && velocBall.y >= 0) {
+                        if((tempRect.getRight() - leftBlock) - (tempRect.getBottom() - topBlock) > 0.01) {
+                            pos.x += (topBlock - BALL_HEIGHT - pos.y) * ratioV;
+                            pos.y = topBlock - BALL_HEIGHT;
+                            velocBall.y *= -1.0;
+                        } else if((tempRect.getRight() - leftBlock) - (tempRect.getBottom() - topBlock) < -0.01) {
+                            pos.y += (leftBlock - BALL_WIDTH - pos.x) / ratioV;
+                            pos.x = leftBlock - BALL_WIDTH;
+                            velocBall.x *= -1.0;
                         } else {
-                            velocBall = Vec2d((blockRectList[i].y + blockRectList[i].h - pos.y + 2) * ratioVeloc,
-                                              blockRectList[i].y + blockRectList[i].h - pos.y + 2);
+                            pos.y = topBlock - BALL_HEIGHT;
+                            pos.x = leftBlock - BALL_WIDTH;
+                            velocBall.x *= -1.0;
+                            velocBall.y *= -1.0;
                         }
-                        collisionY = true;
-                        break;
                     }
                 }
-            }
-        }
-
-        //collision made by x and y change
-        ballRect.x += velocBall.x;
-        if(!collisionX && !collisionY ) {
-            for(int i = 0; i < numOfBlocks; i++) {
-                if(checkCollision(ballRect, blockRectList[i])) {
-                    Vec2d v1;
-                    if(velocBall.y > 0) {
-                        v1 = Vec2d((blockRectList[i].y - (pos.y + BALL_HEIGHT) - 2) * ratioVeloc,
-                                   blockRectList[i].y - (pos.y + BALL_HEIGHT) - 2);
-                    } else {
-                        v1 = Vec2d((blockRectList[i].y + blockRectList[i].h - pos.y + 2) * ratioVeloc,
-                                   blockRectList[i].y + blockRectList[i].h - pos.y + 2);
+                break;
+                case BOT_RIGHT: {
+                    if(velocBall.x <= 0 && velocBall.y <= 0) {
+                        if((tempRect.getLeft() - leftBlock) - (tempRect.getTop() - topBlock) < -0.01) {
+                            pos.x += (botBlock - pos.y) * ratioV;
+                            pos.y = botBlock;
+                            velocBall.y *= -1.0;
+                        } else if((tempRect.getLeft() - leftBlock) - (tempRect.getTop() - topBlock) > 0.01) {
+                            pos.y += (rightBlock - pos.x) / ratioV;
+                            pos.x = rightBlock;
+                            velocBall.x *= -1.0;
+                        } else {
+                            pos.y = botBlock;
+                            velocBall.y *= -1.0;
+                            pos.x = rightBlock;
+                            velocBall.x *= -1.0;
+                        }
                     }
-                    SDL_Rect tempBallRect = getRect();
-                    tempBallRect.x += velocBall.x;
-                    tempBallRect.y += velocBall.y;
-                    if(checkCollision(tempBallRect, blockRectList[i])) {
-                        collisionY = true;
-                    }
-                    Vec2d v2;
-                    if(velocBall.x > 0) {
-                        v2 = Vec2d(blockRectList[i].x - (pos.x + BALL_WIDTH) - 2,
-                                   (blockRectList[i].x - (pos.x + BALL_WIDTH) - 2) / ratioVeloc);
-                    } else {
-                        v2 = Vec2d(blockRectList[i].x + blockRectList[i].w - pos.x + 2,
-                                   (blockRectList[i].x + blockRectList[i].w - pos.x + 2) / ratioVeloc);
-                    }
-                    tempBallRect = getRect();
-                    tempBallRect.x += velocBall.x;
-                    tempBallRect.y += velocBall.y;
-                    if(checkCollision(tempBallRect, blockRectList[i])) {
-                        collisionX = true;
-                    }
-                    if(collisionX)velocBall = v1;
-                    if(collisionY)velocBall = v2;
-                    break;
                 }
+                break;
+                case TOP_RIGHT: {
+                    if(velocBall.x <= 0 && velocBall.y >= 0) {
+                        if((rightBlock - tempRect.getLeft()) - (tempRect.getBottom() - topBlock) > 0.01) {
+                            pos.x += (topBlock - BALL_HEIGHT - pos.y) * ratioV;
+                            pos.y = topBlock - BALL_HEIGHT;
+                            velocBall.y *= -1.0;
+                        } else if((rightBlock - tempRect.getLeft()) - (tempRect.getBottom() - topBlock) < -0.01) {
+                            pos.y += (rightBlock - pos.x) / ratioV;
+                            pos.x = rightBlock;
+                            velocBall.x *= -1.0;
+                        } else {
+                            pos.y = topBlock - BALL_HEIGHT;
+                            velocBall.y *= -1.0;
+                            pos.x = rightBlock;
+                            velocBall.x *= -1.0;
+                        }
+                    }
+                }
+                break;
+                case BOT_LEFT: {
+                    if(velocBall.x >= 0 && velocBall.y <= 0) {
+                        if((rightBlock - tempRect.getRight()) - (tempRect.getTop() - topBlock) > 0.01) {
+                            pos.y += (leftBlock - BALL_WIDTH - pos.x) / ratioV;
+                            pos.x = leftBlock - BALL_WIDTH;
+                            velocBall.x *= -1.0;
+                        } else if((rightBlock - tempRect.getRight()) - (tempRect.getTop() - topBlock) < -0.01) {
+                            pos.x += (botBlock - pos.y) * ratioV;
+                            pos.y = botBlock;
+                            velocBall.y *= -1.0;
+                        } else {
+                            pos.x = leftBlock - BALL_WIDTH;
+                            velocBall.x *= -1.0;
+                            pos.y = botBlock;
+                            velocBall.y *= -1.0;
+                        }
+                    }
+                }
+                break;
+                }
+                break;
             }
         }
-
-        pos.x += velocBall.x;
-        pos.y += velocBall.y;
-        velocBall = v;
-        if(collisionX)velocBall.x = 0 - velocBall.x / DECREASE_VEL;
-        if(collisionY)velocBall.y = 0 - velocBall.y / DECREASE_VEL;
-
+        if(!moved) {
+            pos = pos + velocBall;
+        }
 
         //collision with teleports
         if(int(velocBall.getScale()) > 0 && hasTeleport) {
             for(int i = 0; i < numOfPairsTele; i++) {
-                if(checkCollision(getRect(), pairTeleRectList[i].rect1)) {
+                if(checkCollision(getFloatRect(), pairTeleRectList[i].rect1)) {
                     setPosX(pairTeleRectList[i].rect2.x);
                     setPosY(pairTeleRectList[i].rect2.y);
-                    SDL_Rect tempRect = getRect();
+                    SDL_FloatRect tempRect = getFloatRect();
                     tempRect.x += velocBall.x / DECREASE_VEL;
                     tempRect.y += velocBall.y / DECREASE_VEL;
                     if(checkCollision(tempRect, pairTeleRectList[i].rect2)) {
@@ -179,10 +233,10 @@ void Ball::moveBall(SDL_Rect blockRectList[], int numOfBlocks,
                         //velocBall.x=0;velocBall.y=0;
                     }
                     break;
-                } else if(checkCollision(getRect(), pairTeleRectList[i].rect2)) {
+                } else if(checkCollision(getFloatRect(), pairTeleRectList[i].rect2)) {
                     setPosX(pairTeleRectList[i].rect1.x);
                     setPosY(pairTeleRectList[i].rect1.y);
-                    SDL_Rect tempRect = getRect();
+                    SDL_FloatRect tempRect = getFloatRect();
                     tempRect.x += velocBall.x / DECREASE_VEL;
                     tempRect.y += velocBall.y / DECREASE_VEL;
                     if(checkCollision(tempRect, pairTeleRectList[i].rect1)) {
@@ -210,6 +264,48 @@ void Ball::moveBall(SDL_Rect blockRectList[], int numOfBlocks,
 
     }
 
+}
+int Ball:: posBallWithBlock(SDL_Rect blockRect) {
+    int topRect, botRect, leftRect, rightRect;
+    topRect = blockRect.y;
+    botRect = blockRect.y + blockRect.h;
+    leftRect = blockRect.x;
+    rightRect = blockRect.x + blockRect.w;
+    SDL_FloatRect ballRect = getFloatRect();
+    if(ballRect.getRight() <= leftRect) {
+        if(ballRect.getBottom() <= topRect) {
+            std::cout << "top_left\n";
+            return TOP_LEFT;
+        }
+        if(ballRect.getTop() <= botRect) {
+            std::cout << "mid_left\n";
+            return MID_LEFT;
+        }
+        std::cout << "bot_left\n";
+        return BOT_LEFT;
+    }
+    if(ballRect.getLeft() <= rightRect) {
+        if(ballRect.getBottom() <= topRect) {
+            std::cout << "top_mid\n";
+            return TOP_MID;
+        }
+        if(ballRect.getTop() <= botRect) {
+            std::cout << "center\n";
+            return CENTER;
+        }
+        std::cout << "bot_mid\n";
+        return BOT_MID;
+    }
+    if(ballRect.getBottom() <= topRect) {
+        std::cout << "top_right\n";
+        return TOP_RIGHT;
+    }
+    if(ballRect.getTop() <= botRect) {
+        std::cout << "mid_right\n";
+        return MID_RIGHT;
+    }
+    std::cout << "bot_right\n";
+    return BOT_RIGHT;
 }
 bool Ball::loadTextureFromFile(SDL_Renderer* gRenderer, std::string ballpath, std::string directpath,
                                std::string powermeterbgpath, std::string powermeterfgpath, std::string powerMeterOverlayPath,
@@ -292,3 +388,4 @@ void Ball::turnAround() {
     countTurnAround++;
     countTurnAround %= 19;
 }
+

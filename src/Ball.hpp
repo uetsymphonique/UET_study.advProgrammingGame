@@ -23,6 +23,13 @@ class Ball: public LTexture {
     double getScaleVelocity();
     Vec2d getPosBeforeSwing();
     void turnAround();
+    bool checkCollisionWithDirect(SDL_Rect blockRect);
+    int posBallWithBlock(SDL_Rect blockRect);
+    SDL_FloatRect getFloatRect(){
+        SDL_FloatRect ans = SDL_FloatRect(pos.x,pos.y,BALL_WIDTH,BALL_HEIGHT);
+        //std::cerr<<"t: "<<ans.getTop()<<", b: "<<ans.getBottom()<<", l:"<<ans.getLeft()<<", r:"<<ans.getRight()<<'\n';
+        return ans;
+    }
   private:
     static const int BALL_WIDTH = 16;
     static const int BALL_HEIGHT = 16;
@@ -52,6 +59,17 @@ class Ball: public LTexture {
     //pos before each swing
     Vec2d posBeforeSwing;
 
+    enum POS_WITH_RECT{
+        TOP_LEFT,
+        TOP_MID,
+        TOP_RIGHT,
+        MID_RIGHT,
+        BOT_RIGHT,
+        BOT_MID,
+        BOT_LEFT,
+        MID_LEFT,
+        CENTER
+    };
 
 };
 #endif // BALLCLASS__

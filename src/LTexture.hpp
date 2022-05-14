@@ -58,6 +58,7 @@ class LTexture {
         return mAngle;
     }
 
+
   private:
     //The actual hardware texture
     SDL_Texture* mTexture;

@@ -1,37 +1,24 @@
 #include "params.hpp"
-bool checkCollision( SDL_Rect a, SDL_Rect b ) {
-    //The sides of the rectangles
-    int leftA, leftB;
-    int rightA, rightB;
-    int topA, topB;
-    int bottomA, bottomB;
-
-    //Calculate the sides of rect A
-    leftA = a.x;
-    rightA = a.x + a.w;
-    topA = a.y;
-    bottomA = a.y + a.h;
-
-    //Calculate the sides of rect B
+bool checkCollision( SDL_FloatRect a, SDL_Rect b ) {
+    double topB, bottomB, leftB,rightB;
     leftB = b.x;
     rightB = b.x + b.w;
     topB = b.y;
     bottomB = b.y + b.h;
 
-    //If any of the sides from A are outside of B
-    if( bottomA <= topB ) {
+    if( a.getBottom() <= topB ) {
         return 0;
     }
 
-    if( topA >= bottomB ) {
+    if( a.getTop() >= bottomB) {
         return 0;
     }
 
-    if( rightA <= leftB ) {
+    if( a.getRight() <= leftB ) {
         return 0;
     }
 
-    if( leftA >= rightB ) {
+    if( a.getLeft() >= rightB ) {
         return 0;
     }
 

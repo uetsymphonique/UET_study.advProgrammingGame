@@ -100,6 +100,7 @@ void LTexture::render( SDL_Renderer* gRenderer, SDL_Rect* clip, double angle, SD
     //Set rendering space and render to screen
     if(angle != 0) {
         mAngle = angle;
+        std::cout<<angle<<'\n';
     }
     SDL_Rect renderQuad = { pos.x, pos.y, mWidth, mHeight };
     //Set clip rendering dimensions
