@@ -12,11 +12,43 @@
 #include <chrono>
 #include <ctime>
 #include <algorithm>
+#include <fstream>
 using std::vector;
+using namespace std;
 const int SCREEN_WIDTH = 480;
 const int SCREEN_HEIGHT = 640;
-const int NUM_OF_LEVELS = 7;
+const int NUM_OF_LEVELS = 10;
 const int TIME_BETWEEN_2LEVELS = 4000;
+const int NUM_OF_CHOICES_IN_MENU = 2;
+enum TYPE_BLOCK {
+    BLOCK1,
+    BLOCK2,
+    BLOCK3,
+    BLOCK4,
+    BLOCK1LONG,
+    BLOCK2LONG,
+    BLOCK3LONG,
+    BLOCK4LONG,
+    BLOCK1LONGR,
+    BLOCK2LONGR,
+    BLOCK3LONGR,
+    BLOCK4LONGR,
+    NUM_OF_TYPES_BLOCK
+};
+enum TYPE_ICE {
+    ICEMINI,
+    ICELONG,
+    ICEBIG,
+    NUM_OF_TYPES_ICE
+};
+enum TYPE_WIND{
+    WIND200HIGH,WIND300HIGH,
+    WIND200LOW,WIND300LOW,
+    WIND200HIGHR,WIND300HIGHR,
+    WIND200LOWR,WIND300LOWR,
+    WIND200HIGH_VFLIP,WIND200HIGH_HFLIP,
+    NUM_OF_TYPES_WIND
+};
 struct SDL_FloatRect {
     double x;
     double y;

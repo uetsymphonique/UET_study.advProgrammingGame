@@ -6,6 +6,9 @@
 #include "Hole.hpp"
 #include "Teleport.hpp"
 #include "Swamp.hpp"
+#include "Timer.hpp"
+#include "Ice.hpp"
+#include "Wind.hpp"
 Mix_Music *gMusic = NULL;
 bool init(SDL_Window* &gWindow, SDL_Renderer* &gRenderer) {
     bool success = true;
@@ -61,9 +64,65 @@ bool loadMedia(LTexture &gBackgroundTexture1, LTexture &gBackgroundTexture2, LTe
                Swamp& swamp,
                Teleport &tele1,
                Teleport &tele2,
+               Ice& iceMini,Ice& iceLong, Ice& iceBig,
+               Wind&wind200high,Wind&wind300high,Wind&wind200low,Wind&wind300low,
+               Wind&wind200highr,Wind&wind300highr,Wind&wind200lowr,Wind&wind300lowr,
+               Wind&wind200high_vflip,Wind&wind200high_hflip,
                TTF_Font* &gFont,
                SDL_Renderer* &gRenderer) {
     bool success = true;
+    if(!wind200high.loadFromFile(gRenderer,"gfx/wind.png")){
+        std::cout<<"failed load wind texture\n";
+        success = false;
+    }
+    if(!wind200high_vflip.loadFromFile(gRenderer,"gfx/wind.png")){
+        std::cout<<"failed load wind texture\n";
+        success = false;
+    }
+    if(!wind200high_hflip.loadFromFile(gRenderer,"gfx/wind.png")){
+        std::cout<<"failed load wind texture\n";
+        success = false;
+    }
+    if(!wind200highr.loadFromFile(gRenderer,"gfx/wind.png")){
+        std::cout<<"failed load wind texture\n";
+        success = false;
+    }
+    if(!wind200low.loadFromFile(gRenderer,"gfx/wind.png")){
+        std::cout<<"failed load wind texture\n";
+        success = false;
+    }
+    if(!wind200lowr.loadFromFile(gRenderer,"gfx/wind.png")){
+        std::cout<<"failed load wind texture\n";
+        success = false;
+    }
+    if(!wind300high.loadFromFile(gRenderer,"gfx/wind300.png")){
+        std::cout<<"failed load wind texture\n";
+        success = false;
+    }
+    if(!wind300highr.loadFromFile(gRenderer,"gfx/wind300.png")){
+        std::cout<<"failed load wind texture\n";
+        success = false;
+    }
+    if(!wind300low.loadFromFile(gRenderer,"gfx/wind300.png")){
+        std::cout<<"failed load wind texture\n";
+        success = false;
+    }
+    if(!wind300lowr.loadFromFile(gRenderer,"gfx/wind300.png")){
+        std::cout<<"failed load wind texture\n";
+        success = false;
+    }
+    if(!iceMini.loadFromFile(gRenderer,"gfx/ice.png")){
+        std::cout<<"failed load ice texture\n";
+        success = false;
+    }
+    if(!iceLong.loadFromFile(gRenderer,"gfx/ice2.png")){
+        std::cout<<"failed load ice texture\n";
+        success = false;
+    }
+    if(!iceBig.loadFromFile(gRenderer,"gfx/ice3.png")){
+        std::cout<<"failed load ice texture\n";
+        success = false;
+    }
     if(!tele1.loadFromFile(gRenderer, "gfx/teleport.png")) {
         std::cout << "failed load teleport texture\n";
         success = false;
@@ -181,6 +240,38 @@ bool loadMedia(LTexture &gBackgroundTexture1, LTexture &gBackgroundTexture2, LTe
     }
 
     return success;
+}
+void renderMenuAndLogo(SDL_Renderer* &gRenderer, LTexture &gBackgroundTexture,
+                       LTexture &gEnterTexture, LTexture &gTextEnterTexture, LTexture &gLogoGame) {
+    gBackgroundTexture.render(gRenderer, 0, 0);
+    gEnterTexture.render(gRenderer, (SCREEN_WIDTH - gEnterTexture.getWidth()) / 2, (SCREEN_HEIGHT - gEnterTexture.getHeight()) / 2);
+    gTextEnterTexture.render(gRenderer, (SCREEN_WIDTH - gTextEnterTexture.getWidth()) / 2, (SCREEN_HEIGHT - gTextEnterTexture.getHeight()) / 2 + 120);
+    gLogoGame.render(gRenderer, (SCREEN_WIDTH - gLogoGame.getWidth()) / 2, (SCREEN_HEIGHT - gLogoGame.getHeight()) / 2 - 100);
+}
+void renderIntro(SDL_Renderer* &gRenderer, LTexture& gBackgroundTexture,LTexture& gIntroTextTexture,Timer &gameTimer){
+    gBackgroundTexture.render(gRenderer, 0, 0);
+    gIntroTextTexture.setBlendMode(SDL_BLENDMODE_BLEND);
+    gIntroTextTexture.setAlpha(gameTimer.distanceTime() * 255 / TIME_BETWEEN_2LEVELS);
+    gIntroTextTexture.render(gRenderer, (SCREEN_WIDTH - gIntroTextTexture.getWidth()) / 2, (SCREEN_HEIGHT - gIntroTextTexture.getHeight()) / 2);
+}
+void renderResultWinEachLevel(SDL_Renderer* &gRenderer, LTexture& gBackgroundTexture,
+                              LTexture& gWinEachLevelTextTexture,LTexture&gResultEachLevelTextTexture,
+                              TTF_Font* &gFont,
+                              int mission,int swings){
+    gBackgroundTexture.render(gRenderer);
+    string s1 = "Mission " + to_string(mission) + " completed!";
+    string s2;
+    if(swings > 1) s2 = "You completed in " + to_string(swings) + " swings!";
+    else s2 = "You completed with hole-in-one!";
+    SDL_Color textColor = {0, 0, 0};
+    if(!gWinEachLevelTextTexture.loadFromRenderedText(gRenderer, gFont, s1, textColor)) {
+        std::cout << "failed to render win text texture!\n";
+    }
+    if(!gResultEachLevelTextTexture.loadFromRenderedText(gRenderer, gFont, s2, textColor)) {
+        std::cout << "failed to render result text texture!\n";
+    }
+    gWinEachLevelTextTexture.render(gRenderer, (SCREEN_WIDTH - gWinEachLevelTextTexture.getWidth()) / 2, (SCREEN_HEIGHT - gWinEachLevelTextTexture.getHeight()) / 2 - 50);
+    gResultEachLevelTextTexture.render(gRenderer, (SCREEN_WIDTH - gResultEachLevelTextTexture.getWidth()) / 2, (SCREEN_HEIGHT - gResultEachLevelTextTexture.getHeight()) / 2 + 50);
 }
 void close(SDL_Window* &gWindow, SDL_Renderer* &gRenderer) {
     SDL_DestroyRenderer(gRenderer);

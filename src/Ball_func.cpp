@@ -6,7 +6,7 @@ void Ball::setPosBall(double x, double y) {
     isCharging = false;
     isDown = false;
 }
-void Ball::handleMouseEvent(SDL_Event *e, SDL_Renderer* gRenderer, int &swings) {
+void Ball::handleMouseEvent(SDL_Event *e, SDL_Renderer* gRenderer, int &swings,int& totalSwings) {
     int x, y;
     if(e->type == SDL_MOUSEBUTTONDOWN) {
         isDown = true;
@@ -18,6 +18,7 @@ void Ball::handleMouseEvent(SDL_Event *e, SDL_Renderer* gRenderer, int &swings) 
         if(isCharging) {
             Mix_PlayChannel(-1, gChargeChunk, 0);
             swings++;
+            totalSwings++;
         }
         isCharging = false;
         isDown = false;
@@ -57,6 +58,8 @@ bool Ball::checkCollisionWithDirect(SDL_Rect blockRect) {
 void Ball::moveBall(SDL_Rect blockRectList[], int numOfBlocks,
                     SDL_PairRect pairTeleRectList[], int numOfPairsTele,
                     vector<SDL_Rect> swampRectList, bool& isSwamped,
+                    vector<SDL_Rect> iceRectList,
+                    vector<SDL_Rect> windRectList, vector<InfoWind> windList,
                     bool hasSwamp, bool hasTeleport, bool hasWind, bool hasIce) {
 
     if(!isCharging) {
@@ -249,7 +252,6 @@ void Ball::moveBall(SDL_Rect blockRectList[], int numOfBlocks,
             }
 
         }
-
         if(hasSwamp) {
             for(int i = 0 ; i < swampRectList.size(); i++) {
                 if(checkCollisionCircleWithRect(getRect(), swampRectList[i])) {
@@ -261,7 +263,23 @@ void Ball::moveBall(SDL_Rect blockRectList[], int numOfBlocks,
         }
         velocBall.x /= DECREASE_VEL;
         velocBall.y /= DECREASE_VEL;
-
+        if(hasIce) {
+            for(int i = 0; i < iceRectList.size(); i++) {
+                if(checkCollisionCircleWithRect(getRect(), iceRectList[i])) {
+                    velocBall.x *= (DECREASE_VEL + 0.02);
+                    velocBall.y *= (DECREASE_VEL + 0.02);
+                    break;
+                }
+            }
+        }
+        if(hasWind) {
+            for(int i = 0; i < windRectList.size(); i++) {
+                if(checkCollision(getFloatRect(), windRectList[i])) {
+                    velocBall = velocBall + windList[i].velocWind;
+                    break;
+                }
+            }
+        }
     }
 
 }

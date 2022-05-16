@@ -18,9 +18,6 @@ struct Vec2d {
     Vec2d operator/(double d){
         return {x/d,y/d};
     }
-    double estimateAngle(Vec2d other){
-
-    }
 };
 
 #endif // VEC2D__

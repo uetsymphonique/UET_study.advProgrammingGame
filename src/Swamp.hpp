@@ -4,7 +4,7 @@
 class Swamp: public LTexture {
   public:
     Swamp();
-    rotateSwamp();
+    void rotateSwamp();
   private:
     int countRotate = 0;
 };

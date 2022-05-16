@@ -3,18 +3,22 @@
 #include "Vec2d.hpp"
 #include "LTexture.hpp"
 #include "Block.hpp"
+#include "Wind.hpp"
+#include "InfoWind.hpp"
 class Ball: public LTexture {
   public:
     int countTurnAround = 0;
     const double MIN_VEL_OUT_HOLE = 40;
     Ball() {};
     void freeBall();
-    void handleMouseEvent(SDL_Event *e, SDL_Renderer* gRenderer, int &swings);
+    void handleMouseEvent(SDL_Event *e, SDL_Renderer* gRenderer, int &swings,int&totalSwings);
     void setPosBall(double x, double y);
     void standardlizePosBall();
     void moveBall(SDL_Rect blockRecList[], int numOfBlocks,
                   SDL_PairRect pairTeleRectList[], int numOfPairsTele,
                   vector<SDL_Rect> swampRectList, bool& isSwamped,
+                  vector<SDL_Rect> iceRectList,
+                  vector<SDL_Rect> windRectList, vector<InfoWind> windList,
                   bool hasSwamp = false, bool hasTeleport = false, bool hasWind = false, bool hasIce = false);
     void renderBall(SDL_Renderer* gRenderer);
     bool loadTextureFromFile(SDL_Renderer* gRenderer, std::string ballpath, std::string directpath,

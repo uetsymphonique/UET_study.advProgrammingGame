@@ -1,16 +1,15 @@
 #ifndef PAIRTELEPORTS
 #define PAIRTELEPORTS
-#include "Teleport.hpp"
+#include "Vec2d.hpp"
 class PairTeleports {
   private:
-    Teleport tele1;
-    Teleport tele2;
+    Vec2d posTele1;
+    Vec2d posTele2;
+    int typeTele;
   public:
-    PairTeleports();
-    void loadTextureFromFile(SDL_Renderer* gRenderer, std::string path);
-    SDL_PairRect getPairRect();
-    void setPosPair(int x1, int y1, int x2, int y2);
-    void renderPairTele(SDL_Renderer* gRenderer);
+    const int TELE_WIDTH = 18;
+    const int TELE_HEIGHT = 18;
+    PairTeleports(double x1 = 0.0, double y1 = 0.0, double x2 = 0.0, double y2=0.0,int typeTele = 0);
 };
 
 #endif // PAIRTELEPORTS

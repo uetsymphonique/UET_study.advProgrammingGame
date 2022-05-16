@@ -41,11 +41,14 @@
 		<Unit filename="src/Block_func.cpp" />
 		<Unit filename="src/Hole.hpp" />
 		<Unit filename="src/Hole_func.cpp" />
+		<Unit filename="src/Ice.hpp" />
 		<Unit filename="src/InfoBlock.hpp" />
+		<Unit filename="src/InfoWind.hpp" />
 		<Unit filename="src/LTexture.hpp" />
 		<Unit filename="src/LTexture_func.cpp" />
 		<Unit filename="src/PairTeleports.cpp" />
 		<Unit filename="src/PairTeleports.hpp" />
+		<Unit filename="src/Player.hpp" />
 		<Unit filename="src/Swamp.cpp" />
 		<Unit filename="src/Swamp.hpp" />
 		<Unit filename="src/Teleport.cpp" />
@@ -54,9 +57,13 @@
 		<Unit filename="src/Timer_func.cpp" />
 		<Unit filename="src/Utils.hpp" />
 		<Unit filename="src/Vec2d.hpp" />
+		<Unit filename="src/Wind.hpp" />
+		<Unit filename="src/ice.cpp" />
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/params.cpp" />
 		<Unit filename="src/params.hpp" />
+		<Unit filename="src/player.cpp" />
+		<Unit filename="src/wind.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
