@@ -1,6 +1,4 @@
 # Mini-Golf
-## Table of contents
-- [Mini-Golf]
 ## Mô tả:
 Đây là bài tập lớn môn "_Lập trình nâng cao_"(INT2215_24). 
 Game được thực hiện bởi sinh viên Trần Quang Minh - MSV: 21020471
