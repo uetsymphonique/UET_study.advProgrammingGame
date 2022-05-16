@@ -685,6 +685,6 @@ int main(int argc, char* argv[]) {
     gMusic = NULL;
 
     close(gWindow, gRenderer);
-
+    system("PAUSE");
     return 0;
 }
