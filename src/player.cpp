@@ -20,11 +20,13 @@ int Player::getTotalSwings(){
     return totalSwings;
 }
 istream& operator>>(istream& is,Player& player){
-    is>>player.totalSwings>>player.namePlayer;
+    is>>player.totalSwings;
+    getline(is,player.namePlayer,'\n');
+    player.namePlayer.erase(0,1);
     return is;
 }
 ostream& operator<<(ostream& os,Player player){
-    os<<player.namePlayer<<": "<<player.totalSwings;
+    os<<player.totalSwings<<" "<<player.namePlayer;
     return os;
 }
 

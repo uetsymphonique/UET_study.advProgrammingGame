@@ -214,6 +214,7 @@ void Ball::moveBall(SDL_Rect blockRectList[], int numOfBlocks,
                 }
                 break;
                 }
+                Mix_PlayChannel(-1,gCollisionChunk,0);
                 break;
             }
         }
@@ -327,7 +328,7 @@ int Ball:: posBallWithBlock(SDL_Rect blockRect) {
 }
 bool Ball::loadTextureFromFile(SDL_Renderer* gRenderer, std::string ballpath, std::string directpath,
                                std::string powermeterbgpath, std::string powermeterfgpath, std::string powerMeterOverlayPath,
-                               std::string chargeMusicPath) {
+                               std::string chargeMusicPath,std::string collisionMusicPath) {
     bool success = true;
     if(!loadFromFile(gRenderer, ballpath)) {
         std::cout << "load ball failed\n";
@@ -356,6 +357,11 @@ bool Ball::loadTextureFromFile(SDL_Renderer* gRenderer, std::string ballpath, st
     gChargeChunk = Mix_LoadWAV(chargeMusicPath.c_str());
     if(gChargeChunk == NULL) {
         std::cout << "load charge chunk failed!\n";
+        success = false;
+    }
+    gCollisionChunk = Mix_LoadWAV(collisionMusicPath.c_str());
+    if(gCollisionChunk == NULL) {
+        std::cout << "load collision chunk failed!\n";
         success = false;
     }
     return success;
@@ -405,5 +411,9 @@ void Ball::turnAround() {
     }
     countTurnAround++;
     countTurnAround %= 19;
+}
+SDL_FloatRect Ball::getFloatRect(){
+    SDL_FloatRect ans = SDL_FloatRect(pos.x,pos.y,BALL_WIDTH,BALL_HEIGHT);
+    return ans;
 }
 

@@ -12,29 +12,29 @@
 #include "Player.hpp"
 #include "InfoWind.hpp"
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
-bool cmpPlayer (Player p1,Player p2){
-    if(p1.getTotalSwings()<p2.getTotalSwings()) return true;
-    if(p1.getTotalSwings()>p2.getTotalSwings()) return false;
-    return(p1.getNamePlayer().compare(p2.getNamePlayer())<0);
-}
+
 int main(int argc, char* argv[]) {
     vector<Player> topPlayers(10);
+    vector<int>tempMinSw(NUM_OF_LEVELS);
     vector<int>minSwingsEachLevel(NUM_OF_LEVELS);
-    int minTotalSwings;
+    int minTotalSwings = 0, tempMinTotal = 0;;
     fstream highScoresStream;
-    highScoresStream.open("note.txt",ios::in|ios::out);
-    if(!highScoresStream.is_open()){
-        std::cout<<"failed to open file\n";
+    highScoresStream.open("note.txt", ios::in );
+    if(!highScoresStream.is_open()) {
+        std::cout << "failed to open file\n";
         return 404;
     }
-    while(!highScoresStream.eof()){
-        for(int i = 0;i<topPlayers.size();i++)highScoresStream>>topPlayers[i];
-        for(int i = 0;i<minSwingsEachLevel.size();i++)highScoresStream>>minSwingsEachLevel[i];
-        highScoresStream>>minTotalSwings;
+    for(int i = 0; i < topPlayers.size(); i++)highScoresStream >> topPlayers[i];
+    for(int i = 0; i < minSwingsEachLevel.size(); i++) {
+        highScoresStream >> minSwingsEachLevel[i];
+        tempMinSw[i] = minSwingsEachLevel[i];
     }
-    for(int i = 0;i<topPlayers.size();i++) cout<<topPlayers[i]<<'\n';
-    for(int i = 0;i<minSwingsEachLevel.size();i++)cout<<minSwingsEachLevel[i]<<" ";
-    cout<<minTotalSwings<<'\n';
+    highScoresStream >> minTotalSwings;
+    highScoresStream.close();
+    tempMinTotal = minTotalSwings;
+    for(int i = 0; i < topPlayers.size(); i++) cout << topPlayers[i] << '\n';
+    for(int i = 0; i < minSwingsEachLevel.size(); i++)cout << minSwingsEachLevel[i] << " ";
+    cout << minTotalSwings << '\n';
 
     SDL_Window* gWindow = NULL;
     SDL_Renderer* gRenderer = NULL;
@@ -44,9 +44,10 @@ int main(int argc, char* argv[]) {
     LTexture gBackgroundTexture4;
     LTexture gBackgroundTexture;
 
+
     LTexture gEnterTexture;
     TTF_Font *gFont = NULL;
-    LTexture gTextEnterTexture;
+    LTexture gTextEnterTexture[NUM_OF_CHOICES_IN_MENU];
     LTexture gLogoGame;
 
     LTexture gIntroTextTexture;
@@ -55,6 +56,7 @@ int main(int argc, char* argv[]) {
 
     Hole hole;
     SDL_Rect holeRect;
+    Mix_Chunk* gHoleChunk = NULL;
 
     Timer gameTimer;
     vector<int>levels(NUM_OF_LEVELS);
@@ -92,18 +94,30 @@ int main(int argc, char* argv[]) {
 
     LTexture gWinEachLevelTextTexture;
     LTexture gResultEachLevelTextTexture;
+    LTexture gHighScoresTextTexture;
+    LTexture gNameTitle;
+    LTexture gRankingTitle;
+    LTexture gScoreTitle;
+    LTexture gPlayerNameTextTexture[10];
+    LTexture gPlayerScoreTextTexture[10];
 
+    LTexture gBackgroundSaveNameTexture;
+    LTexture gDialogTypeNameTexture;
+    LTexture gTypeNameTitle;
+    LTexture gNameTypingTexture;
 
     if(!init(gWindow, gRenderer))std::cout << "init failed\n";
     else {
-        if(!loadMedia(gBackgroundTexture1, gBackgroundTexture2, gBackgroundTexture3, gBackgroundTexture4,
+        if(!loadMedia(gBackgroundTexture1, gBackgroundTexture2, gBackgroundTexture3, gBackgroundTexture4, gBackgroundSaveNameTexture,
                       gTextEnterTexture,
                       gEnterTexture,
                       gLogoGame,
                       gMusic,
                       gIntroTextTexture,
+                      gRankingTitle, gNameTitle, gScoreTitle,
+                      gDialogTypeNameTexture, gTypeNameTitle,
                       ball,
-                      hole,
+                      hole,gHoleChunk,
                       block1, block2, block3, block4,
                       block1Long, block2Long, block3Long, block4Long,
                       block1LongR, block2LongR, block3LongR, block4LongR,
@@ -122,98 +136,129 @@ int main(int argc, char* argv[]) {
             bool isEnter = false;
             bool isWin = true;
             bool isHighScores = false;
+            bool currentPlayerIsSaved = false;
+            bool isSave = false;
             int choiceMenu = 0;
             int swings = 0;
             int totalSwings = 0;
+            string nameTyping = "";
             int indexLevel;
             vector<Block>blocks(NUM_OF_TYPES_BLOCK);
-            blocks[0] = block1;
-            blocks[1] = block2;
-            blocks[2] = block3;
-            blocks[3] = block4;
-            blocks[4] = block1Long;
-            blocks[5] = block2Long;
-            blocks[6] = block3Long;
-            blocks[7] = block4Long;
-            blocks[8] = block1LongR;
-            blocks[9] = block2LongR;
-            blocks[10] = block3LongR;
-            blocks[11] = block4LongR;
+            {
+                blocks[0] = block1;
+                blocks[1] = block2;
+                blocks[2] = block3;
+                blocks[3] = block4;
+                blocks[4] = block1Long;
+                blocks[5] = block2Long;
+                blocks[6] = block3Long;
+                blocks[7] = block4Long;
+                blocks[8] = block1LongR;
+                blocks[9] = block2LongR;
+                blocks[10] = block3LongR;
+                blocks[11] = block4LongR;
+            }
+
             vector<Ice>ices(NUM_OF_TYPES_ICE);
-            ices[ICEMINI] = iceMini;
-            ices[ICELONG] = iceLong;
-            ices[ICEBIG] = iceBig;
+            {
+                ices[ICEMINI] = iceMini;
+                ices[ICELONG] = iceLong;
+                ices[ICEBIG] = iceBig;
+            }
+
             vector<Wind>winds(NUM_OF_TYPES_WIND);
-            winds[WIND200HIGH] = wind200high;
-            winds[WIND200HIGH].setSpeedScroll(3);
-            winds[WIND200HIGHR] = wind200highr;
-            winds[WIND200HIGHR].setSpeedScroll(3);
-            winds[WIND300HIGH] = wind300high;
-            winds[WIND300HIGH].setSpeedScroll(3);
-            winds[WIND300HIGHR] = wind300highr;
-            winds[WIND300HIGHR].setSpeedScroll(3);
-            winds[WIND200LOW] = wind200high;
-            winds[WIND200LOW].setSpeedScroll(6);
-            winds[WIND200LOWR] = wind200highr;
-            winds[WIND200LOWR].setSpeedScroll(6);
-            winds[WIND300LOW] = wind300high;
-            winds[WIND300LOW].setSpeedScroll(6);
-            winds[WIND300LOWR] = wind300highr;
-            winds[WIND300LOWR].setSpeedScroll(6);
-            winds[WIND200HIGH_VFLIP] = wind200high_vflip;
-            winds[WIND200HIGH_VFLIP].setSpeedScroll(3);
-            winds[WIND200HIGH_HFLIP] = wind200high_hflip;
-            winds[WIND200HIGH_HFLIP].setSpeedScroll(3);
+            {
+                winds[WIND200HIGH] = wind200high;
+                winds[WIND200HIGH].setSpeedScroll(3);
+                winds[WIND200HIGHR] = wind200highr;
+                winds[WIND200HIGHR].setSpeedScroll(3);
+                winds[WIND300HIGH] = wind300high;
+                winds[WIND300HIGH].setSpeedScroll(3);
+                winds[WIND300HIGHR] = wind300highr;
+                winds[WIND300HIGHR].setSpeedScroll(3);
+                winds[WIND200LOW] = wind200high;
+                winds[WIND200LOW].setSpeedScroll(6);
+                winds[WIND200LOWR] = wind200highr;
+                winds[WIND200LOWR].setSpeedScroll(6);
+                winds[WIND300LOW] = wind300high;
+                winds[WIND300LOW].setSpeedScroll(6);
+                winds[WIND300LOWR] = wind300highr;
+                winds[WIND300LOWR].setSpeedScroll(6);
+                winds[WIND200HIGH_VFLIP] = wind200high_vflip;
+                winds[WIND200HIGH_VFLIP].setSpeedScroll(3);
+                winds[WIND200HIGH_HFLIP] = wind200high_hflip;
+                winds[WIND200HIGH_HFLIP].setSpeedScroll(3);
+            }
+
             SDL_Event e;
             cout << levels.size();
             iota(levels.begin(), levels.end(), 0);
             while(!quit) {
                 while(SDL_PollEvent(&e) != 0) {
                     if(e.type == SDL_QUIT) quit = true;
-                    else if(e.type==SDL_KEYDOWN){
-                        switch(e.key.keysym.sym) {
-                        case SDLK_ESCAPE:
+                    else if(e.type == SDL_KEYDOWN) {
+                        if(e.key.keysym.sym == SDLK_ESCAPE) {
                             isEnter = false;
                             isHighScores = false;
-                            break;
-                        case SDLK_SPACE:
-                            if(choiceMenu==0&&!isHighScores){
+                        } else if(e.key.keysym.sym == SDLK_SPACE) {
+                            if(isSave && nameTyping.size() <= 12) {
+                                nameTyping += char(e.key.keysym.sym);
+                            }
+                            if(choiceMenu == 0 && !isHighScores ) {
                                 isEnter = true;
                             }
-                            if(choiceMenu == 1&&!isEnter){
+                            if(choiceMenu == 1 && !isEnter) {
                                 isHighScores = true;
                             }
                             break;
-                        case SDLK_m:
-                            if( Mix_PlayingMusic() == 0 ) {
-                                Mix_PlayMusic( gMusic, -1 );
+                        }
+
+                        else if(e.key.keysym.sym == SDLK_m) {
+                            if(isSave && nameTyping.size() <= 12) {
+                                nameTyping += char(SDLK_m);
                             } else {
-                                if( Mix_PausedMusic() == 1 ) {
-                                    Mix_ResumeMusic();
+                                if( Mix_PlayingMusic() == 0 ) {
+                                    Mix_PlayMusic( gMusic, -1 );
                                 } else {
-                                    Mix_PauseMusic();
+                                    if( Mix_PausedMusic() == 1 ) {
+                                        Mix_ResumeMusic();
+                                    } else {
+                                        Mix_PauseMusic();
+                                    }
                                 }
                             }
-                            break;
-                        case SDLK_UP:
-                            if(!isEnter&&!isHighScores){
+                        } else if((e.key.keysym.sym <= SDLK_z && e.key.keysym.sym >= SDLK_a)
+                                  || (e.key.keysym.sym >= SDLK_0 && e.key.keysym.sym <= SDLK_9)
+                                  || e.key.keysym.sym == SDLK_PERIOD) {
+                            if(isSave && nameTyping.size() <= 12) {
+                                nameTyping += char(e.key.keysym.sym);
+                            }
+                        } else if(e.key.keysym.sym == SDLK_BACKSPACE) {
+                            if(isSave) {
+                                nameTyping.erase(nameTyping.size() - 1);
+                            }
+                        } else if(e.key.keysym.sym == SDLK_UP) {
+                            if(!isEnter && !isHighScores) {
                                 choiceMenu++;
-                                choiceMenu%=NUM_OF_CHOICES_IN_MENU;
+                                choiceMenu %= NUM_OF_CHOICES_IN_MENU;
                             }
-                            break;
-                        case SDLK_DOWN:
-                            if(!isEnter&&!isHighScores){
-                                choiceMenu--;choiceMenu+=NUM_OF_CHOICES_IN_MENU;
-                                choiceMenu%=NUM_OF_CHOICES_IN_MENU;
+                        } else if(e.key.keysym.sym == SDLK_DOWN) {
+                            if(!isEnter && !isHighScores) {
+                                choiceMenu--;
+                                choiceMenu += NUM_OF_CHOICES_IN_MENU;
+                                choiceMenu %= NUM_OF_CHOICES_IN_MENU;
                             }
-                            break;
+                        } else if(e.key.keysym.sym == SDLK_RETURN) {
+                            if(isSave) {
+                                currentPlayerIsSaved = true;
+                            }
                         }
                     }
                     int x, y;
                     SDL_GetMouseState(&x, &y);
                     if(x < 5 || x > SCREEN_WIDTH - 5 || y < 5 || y > SCREEN_HEIGHT - 5)ball.setPosBall(ball.getPosX(), ball.getPosY());
                     else {
-                        ball.handleMouseEvent(&e, gRenderer, swings, totalSwings);
+                        if(!isSwamped&&!isWin&&isEnter) ball.handleMouseEvent(&e, gRenderer, swings, totalSwings);
                     }
                 }
                 SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
@@ -230,7 +275,6 @@ int main(int argc, char* argv[]) {
                         swings = 0;
                         isWin = false;
                         switch(levels[indexLevel]) {
-                        //switch(4) {
                         case 0: { //normal
                             hasTeleport = false;
                             hasSwamp = false;
@@ -541,6 +585,7 @@ int main(int argc, char* argv[]) {
                         if(!gSwingsTextTexture.loadFromRenderedText(gRenderer, gFont, s, textColor)) {
                             std::cout << "failed to render swing text texture!\n";
                         }
+
                         gameTimer.updateTime();
                         gBackgroundTexture.render(gRenderer, 0, 0);
                         gSwingsTextTexture.render(gRenderer);
@@ -563,44 +608,19 @@ int main(int argc, char* argv[]) {
 
                         ball.renderBall(gRenderer);
                         hole.render(gRenderer);
+                        renderAllObjects(gRenderer,
+                                         blocks, blockList, tele1, tele2,
+                                         swamp, swampRectList,
+                                         ices, iceList, winds, windList,
+                                         hasTeleport, hasSwamp, hasIce, hasWind);
 
-                        for(int i = 0; i < blockList.size(); i++) {
-                            blocks[blockList[i].typeBlock].render(gRenderer, blockList[i].pos.x, blockList[i].pos.y);
-                        }
-                        if(hasTeleport) {
-                            tele1.render(gRenderer);
-                            tele2.render(gRenderer);
-                        }
-                        if(hasSwamp) {
-                            for(int i = 0; i < swampRectList.size(); i++) {
-                                swamp.render(gRenderer, swampRectList[i].x, swampRectList[i].y);
-                            }
-                            swamp.rotateSwamp();
-                        }
-                        if(hasIce) {
-                            for(int i = 0; i < iceList.size(); i++) {
-                                ices[iceList[i].typeIce].render(gRenderer, iceList[i].pos.x, iceList[i].pos.y);
-                            }
-                        }
-                        if(hasWind) {
-                            double angle = 0.0;
-                            for(int i = 0; i < windList.size(); i++) {
-                                SDL_RendererFlip flip = SDL_FLIP_NONE;
-                                if(windList[i].typeWind == WIND200HIGH_HFLIP) flip = SDL_FLIP_HORIZONTAL;
-                                else if(windList[i].typeWind == WIND200HIGH_VFLIP) flip = SDL_FLIP_VERTICAL;
-                                if(windList[i].typeWind >= WIND200HIGHR && windList[i].typeWind <= WIND300LOWR) {
-                                    angle = 180.0;
-                                } else angle = 0.0;
-                                winds[windList[i].typeWind].renderWind(gRenderer,
-                                                                       windList[i].pos.x, windList[i].pos.y, angle, flip);
-                            }
-                        }
                         holeRect = hole.getRect();
                         holeRect.h = 16;
                         if(ball.getScaleVelocity() > ball.MIN_VEL_OUT_HOLE || !checkCollisionCircleWithRect(ball.getRect(), holeRect)) {
                             ball.renderBall(gRenderer);
                         } else {
                             isWin = true;
+                            Mix_PlayChannel(-1,gHoleChunk,0);
                             ball.setPosBall(hole.getPosX(), hole.getPosY());
                             ball.renderBall(gRenderer);
                         }
@@ -609,23 +629,50 @@ int main(int argc, char* argv[]) {
 
                     } else if(levels.size() > 0) {
                         renderResultWinEachLevel(gRenderer, gBackgroundTexture,
-                                                 gWinEachLevelTextTexture, gResultEachLevelTextTexture, \
+                                                 gWinEachLevelTextTexture, gResultEachLevelTextTexture,
+                                                 gHighScoresTextTexture,
                                                  gFont,
-                                                 NUM_OF_LEVELS - levels.size(), swings);
+                                                 NUM_OF_LEVELS - levels.size(), swings,
+                                                 minSwingsEachLevel[NUM_OF_LEVELS - levels.size() - 1], tempMinSw[NUM_OF_LEVELS - levels.size() - 1]);
                     } else if(levels.size() == 0) {
-                        gBackgroundTexture1.render(gRenderer, 0, 0);
-                        string s1 = "Congratulations, all missions completed!";
-                        SDL_Color textColor = {0, 0, 0};
-                        if(!gWinEachLevelTextTexture.loadFromRenderedText(gRenderer, gFont, s1, textColor)) {
-                            std::cout << "failed to render win text texture!\n";
+                        if(gameTimer.distanceTime() <= TIME_BETWEEN_2LEVELS) {
+                            if(gameTimer.distanceTime() <= TIME_BETWEEN_2LEVELS / 2) {
+                                renderResultWinEachLevel(gRenderer,
+                                                         gBackgroundTexture, gWinEachLevelTextTexture,
+                                                         gResultEachLevelTextTexture, gHighScoresTextTexture, gFont,
+                                                         NUM_OF_LEVELS - levels.size(), swings,
+                                                         minSwingsEachLevel[NUM_OF_LEVELS - levels.size() - 1], tempMinSw[NUM_OF_LEVELS - levels.size() - 1]);
+                            } else renderWinOverall(gRenderer,
+                                                        gBackgroundTexture1, gWinEachLevelTextTexture,
+                                                        gResultEachLevelTextTexture, gHighScoresTextTexture, gFont,
+                                                        totalSwings, minTotalSwings, tempMinTotal);
                         }
-                        gWinEachLevelTextTexture.render(gRenderer, (SCREEN_WIDTH - gWinEachLevelTextTexture.getWidth()) / 2, (SCREEN_HEIGHT - gWinEachLevelTextTexture.getHeight()) / 2);
                         if(gameTimer.distanceTime() >= TIME_BETWEEN_2LEVELS) {
-                            topPlayers.push_back(Player("minh",totalSwings));
-                            sort(topPlayers.begin(),topPlayers.end(),cmpPlayer);
-                            //topPlayers.resize(10);
-                            for(auto p:topPlayers) cout<<p<<'\n';
-                            isEnter = false;
+                            isSave = true;
+                            if(currentPlayerIsSaved) {
+                                Player currentPlayer = Player(nameTyping, totalSwings);
+                                sortPlayer(topPlayers, currentPlayer);
+                                updateHighScores(minSwingsEachLevel, tempMinSw, minTotalSwings, tempMinTotal);
+                                levels.resize(NUM_OF_LEVELS);
+                                iota(levels.begin(), levels.end(), 0);
+                                nameTyping = "";
+                                isEnter = false;
+                                isSave = false;
+                                currentPlayerIsSaved = false;
+                            } else {
+                                gBackgroundSaveNameTexture.render(gRenderer);
+                                gDialogTypeNameTexture.render(gRenderer, (SCREEN_WIDTH - gDialogTypeNameTexture.getWidth()) / 2,
+                                                              (SCREEN_HEIGHT - gDialogTypeNameTexture.getHeight()) / 2);
+                                gTypeNameTitle.render(gRenderer, (SCREEN_WIDTH - gTypeNameTitle.getWidth()) / 2,
+                                                      gDialogTypeNameTexture.getPosY() + (63 - gTypeNameTitle.getHeight()) / 2);
+                                SDL_Color textColor = {0, 0, 0};
+                                if(!gNameTypingTexture.loadFromRenderedText(gRenderer, gFont, nameTyping + "_", textColor)) {
+                                    std::cout << "failed to load name typing texture!\n";
+                                }
+                                gNameTypingTexture.render(gRenderer, (SCREEN_WIDTH - gNameTypingTexture.getWidth()) / 2,
+                                                          gDialogTypeNameTexture.getPosY() + 84 + (59 - gNameTypingTexture.getHeight()) / 2);
+                            }
+
                         }
                     } else if(gameTimer.distanceTime() < 3000) {
                         SDL_Color textColor = {0, 0, 0};
@@ -639,52 +686,31 @@ int main(int argc, char* argv[]) {
                         ball.setAlpha(255 - gameTimer.distanceTime() * 255 / TIME_BETWEEN_2LEVELS);
                         ball.renderBall(gRenderer);
                         hole.render(gRenderer);
-                        for(int i = 0; i < blockList.size(); i++) {
-                            blocks[blockList[i].typeBlock].render(gRenderer, blockList[i].pos.x, blockList[i].pos.y);
-                        }
-                        if(hasTeleport) {
-                            tele1.render(gRenderer);
-                            tele2.render(gRenderer);
-                        }
-                        if(hasSwamp) {
-                            for(int i = 0; i < swampRectList.size(); i++) {
-                                swamp.render(gRenderer, swampRectList[i].x, swampRectList[i].y);
-                            }
-                            swamp.rotateSwamp();
-                        }
-                        if(hasIce) {
-                            for(int i = 0; i < iceList.size(); i++) {
-                                ices[iceList[i].typeIce].render(gRenderer, iceList[i].pos.x, iceList[i].pos.y);
-                            }
-                        }
-                        if(hasWind) {
-                            double angle = 0.0;
-                            for(int i = 0; i < windList.size(); i++) {
-                                SDL_RendererFlip flip = SDL_FLIP_NONE;
-                                if(windList[i].typeWind == WIND200HIGH_HFLIP) flip = SDL_FLIP_HORIZONTAL;
-                                else if(windList[i].typeWind == WIND200HIGH_VFLIP) flip = SDL_FLIP_VERTICAL;
-                                if(windList[i].typeWind >= WIND200HIGHR && windList[i].typeWind <= WIND300LOWR) {
-                                    angle = 180.0;
-                                } else angle = 0.0;
-                                winds[windList[i].typeWind].renderWind(gRenderer,
-                                                                       windList[i].pos.x, windList[i].pos.y, angle, flip);
-                            }
-                        }
+                        renderAllObjects(gRenderer,
+                                         blocks, blockList, tele1, tele2,
+                                         swamp, swampRectList,
+                                         ices, iceList, winds, windList,
+                                         hasTeleport, hasSwamp, hasIce, hasWind);
                     }
                 } else {
                     totalSwings = 0;
-                    if(!isHighScores) renderMenuAndLogo(gRenderer, gBackgroundTexture1, gEnterTexture, gTextEnterTexture, gLogoGame);
+                    if(!isHighScores) renderMenuAndLogo(gRenderer, gBackgroundTexture1, gEnterTexture, gTextEnterTexture, gLogoGame, choiceMenu);
+                    else {
+                        renderHighScoreBoard(gRenderer, gBackgroundTexture4, gRankingTitle, gNameTitle, gScoreTitle, gPlayerNameTextTexture, gPlayerScoreTextTexture, gFont, topPlayers);
+                    }
                 }
                 SDL_RenderPresent(gRenderer);
             }
         }
     }
+    highScoresStream.open("note.txt", ios::out | ios::trunc);
+    updateDatabaseScores(highScoresStream, topPlayers, minSwingsEachLevel, minTotalSwings);
+    highScoresStream.close();
     TTF_CloseFont( gFont );
     gFont = NULL;
     Mix_FreeMusic( gMusic );
     gMusic = NULL;
 
     close(gWindow, gRenderer);
-    system("PAUSE");
     return 0;
 }

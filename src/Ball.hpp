@@ -23,17 +23,13 @@ class Ball: public LTexture {
     void renderBall(SDL_Renderer* gRenderer);
     bool loadTextureFromFile(SDL_Renderer* gRenderer, std::string ballpath, std::string directpath,
                              std::string powerMeterBgPath, std::string powerMeterFgPath, std::string powerMeterOverlayPath,
-                             std::string chargeMusicPath);
+                             std::string chargeMusicPath,std::string collisionMusicPath);
     double getScaleVelocity();
     Vec2d getPosBeforeSwing();
     void turnAround();
     bool checkCollisionWithDirect(SDL_Rect blockRect);
     int posBallWithBlock(SDL_Rect blockRect);
-    SDL_FloatRect getFloatRect(){
-        SDL_FloatRect ans = SDL_FloatRect(pos.x,pos.y,BALL_WIDTH,BALL_HEIGHT);
-        //std::cerr<<"t: "<<ans.getTop()<<", b: "<<ans.getBottom()<<", l:"<<ans.getLeft()<<", r:"<<ans.getRight()<<'\n';
-        return ans;
-    }
+    SDL_FloatRect getFloatRect();
   private:
     static const int BALL_WIDTH = 16;
     static const int BALL_HEIGHT = 16;
@@ -59,6 +55,7 @@ class Ball: public LTexture {
 
     //sfx
     Mix_Chunk *gChargeChunk = NULL;
+    Mix_Chunk *gCollisionChunk = NULL;
 
     //pos before each swing
     Vec2d posBeforeSwing;

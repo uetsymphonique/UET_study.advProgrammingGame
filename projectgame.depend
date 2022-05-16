@@ -155,10 +155,10 @@
 1651912050 c:\users\admin\desktop\advprogrammingbtl\swamp.hpp
 	"LTexture.hpp"
 
-1652684921 source:c:\users\admin\desktop\advprogrammingbtl\src\ball_func.cpp
+1652735172 source:c:\users\admin\desktop\advprogrammingbtl\src\ball_func.cpp
 	"Ball.hpp"
 
-1652684869 c:\users\admin\desktop\advprogrammingbtl\src\ball.hpp
+1652735069 c:\users\admin\desktop\advprogrammingbtl\src\ball.hpp
 	"Vec2d.hpp"
 	"LTexture.hpp"
 	"Block.hpp"
@@ -168,7 +168,7 @@
 1652592921 c:\users\admin\desktop\advprogrammingbtl\src\vec2d.hpp
 	"params.hpp"
 
-1652636151 c:\users\admin\desktop\advprogrammingbtl\src\params.hpp
+1652732333 c:\users\admin\desktop\advprogrammingbtl\src\params.hpp
 	<iostream>
 	<cmath>
 	<vector>
@@ -227,7 +227,7 @@
 1651912050 source:c:\users\admin\desktop\advprogrammingbtl\src\teleport.cpp
 	"Teleport.hpp"
 
-1652687137 source:c:\users\admin\desktop\advprogrammingbtl\src\main.cpp
+1652735501 source:c:\users\admin\desktop\advprogrammingbtl\src\main.cpp
 	"params.hpp"
 	"Utils.hpp"
 	"LTexture.hpp"
@@ -242,7 +242,7 @@
 	"Player.hpp"
 	"InfoWind.hpp"
 
-1652685943 c:\users\admin\desktop\advprogrammingbtl\src\utils.hpp
+1652735702 c:\users\admin\desktop\advprogrammingbtl\src\utils.hpp
 	"params.hpp"
 	"LTexture.hpp"
 	"Ball.hpp"
@@ -253,6 +253,8 @@
 	"Ice.hpp"
 	"Wind.hpp"
 	"Player.hpp"
+	"InfoBlock.hpp"
+	"LButton.hpp"
 
 1652542821 c:\users\admin\desktop\advprogrammingbtl\src\infoblock.hpp
 	"params.hpp"
@@ -281,6 +283,12 @@
 1652639256 c:\users\admin\desktop\advprogrammingbtl\src\player.hpp
 	"params.hpp"
 
-1652639256 source:c:\users\admin\desktop\advprogrammingbtl\src\player.cpp
+1652715876 source:c:\users\admin\desktop\advprogrammingbtl\src\player.cpp
 	"Player.hpp"
+
+1652734382 source:c:\users\admin\desktop\advprogrammingbtl\src\lbutton.cpp
+	"LButton.hpp"
+
+1652734673 c:\users\admin\desktop\advprogrammingbtl\src\lbutton.hpp
+	"LTexture.hpp"
 

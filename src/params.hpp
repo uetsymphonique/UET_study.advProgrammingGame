@@ -19,7 +19,11 @@ const int SCREEN_WIDTH = 480;
 const int SCREEN_HEIGHT = 640;
 const int NUM_OF_LEVELS = 10;
 const int TIME_BETWEEN_2LEVELS = 4000;
-const int NUM_OF_CHOICES_IN_MENU = 2;
+enum TYPE_CHOICE{
+    ENTERGAME,
+    RANKING,
+    NUM_OF_CHOICES_IN_MENU
+};
 enum TYPE_BLOCK {
     BLOCK1,
     BLOCK2,
