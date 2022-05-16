@@ -9,6 +9,7 @@
 #include "Timer.hpp"
 #include "Ice.hpp"
 #include "Wind.hpp"
+#include "Player.hpp"
 Mix_Music *gMusic = NULL;
 bool init(SDL_Window* &gWindow, SDL_Renderer* &gRenderer) {
     bool success = true;
@@ -216,7 +217,7 @@ bool loadMedia(LTexture &gBackgroundTexture1, LTexture &gBackgroundTexture2, LTe
     if(!gLogoGame.loadFromFile(gRenderer, "gfx/logoo.png")) {
         std::cout << "failed to load logo\n";
     }
-    gMusic = Mix_LoadMUS("musicgame.wav");
+    gMusic = Mix_LoadMUS("sfx/musicgame.wav");
     if(gMusic == NULL) {
         std::cout << "failed to load music theme! SDL_mixer Error: " << Mix_GetError() << '\n';
         success = false;
