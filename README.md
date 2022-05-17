@@ -10,7 +10,7 @@ Game được code bằng ngôn ngữ C++ có tích hợp sử dụng thư việ
   + Vận tốc giảm dần qua thời gian do ma sát.
   + Có phản xạ khi gặp vật cản hoặc khi di chuyển chạm vào khung màn hình.
   + Rơi xuống lỗ khi gặp lỗ.
-- Ngoài ra game còn có một số các tính năng đặc biệt khác đẻ tạo hứng thú cho người chơi.
+- Ngoài ra game còn có một số các tính năng đặc biệt khác để tạo hứng thú cho người chơi ví dụ như địa hình gió làm thay đổi vận tốc, địa hình băng làm bóng trôi hay địa hình đầm lầy khiến bóng bị chìm.
 ## Tài liệu tham khảo
 Ý tưởng của game có lấy một phần từ project game "_Twini-Golf_" (https://github.com/PolyMarsDev/Twini-Golf), game sử dụng lại một số hình ảnh và sound effect của project nói trên chứ hoàn toàn không sao chép code hay modify project này.
-Xin gửi lời cảm ơn đến tác giả của project game nói trên về sự giúp đỡ về mặt tài nguyên hình ảnh, đồng thời gửi lời cảm ơn đến hai giảng viên Trần Thị Minh Châu (https://github.com/chauttm) và Kiều Hải Đăng của Trường Đại học Công nghệ, ĐHQGHN đã cung cấp những kiến thức cần có để tôi có thể hoàn thành project này.
+Xin gửi lời cảm ơn đến tác giả của project game nói trên về sự giúp đỡ về mặt tài nguyên hình ảnh và sound effect, đồng thời gửi lời cảm ơn đến hai giảng viên Trần Thị Minh Châu (https://github.com/chauttm) và Kiều Hải Đăng của Trường Đại học Công nghệ, ĐHQGHN đã cung cấp những kiến thức cần có để tôi có thể hoàn thành project này.
