@@ -11,7 +11,6 @@
 #include "Wind.hpp"
 #include "Player.hpp"
 #include "InfoBlock.hpp"
-#include "LButton.hpp"
 Mix_Music *gMusic = NULL;
 bool init(SDL_Window* &gWindow, SDL_Renderer* &gRenderer) {
     bool success = true;
@@ -60,6 +59,7 @@ bool loadMedia(LTexture &gBackgroundTexture1, LTexture &gBackgroundTexture2, LTe
                Mix_Music* &gMusic,
                LTexture &gIntroTextTexture,
                LTexture &gRankingTitle, LTexture& gNameTitle, LTexture& gScoreTitle,
+               LTexture& gInstructionTitle,LTexture& gInsHowToPlay,LTexture& gInsHowToPlayCont,LTexture& gInsHowToMuteMusic,LTexture& gInsHowToBackMenu,
                LTexture &gDialogTypeNameTexture,LTexture &gTypeNameTitle,
                Ball& ball,
                Hole& hole,Mix_Chunk* &gHoleChunk,
@@ -76,6 +76,10 @@ bool loadMedia(LTexture &gBackgroundTexture1, LTexture &gBackgroundTexture2, LTe
                TTF_Font* &gFont,
                SDL_Renderer* &gRenderer) {
     bool success = true;
+    if(!gInstructionTitle.loadFromFile(gRenderer,"gfx/instructionTitle.png")){
+        std::cout<<"failed load title instruction\n";
+        success = false;
+    }
     if(!gDialogTypeNameTexture.loadFromFile(gRenderer,"gfx/typeNameDialog.png")){
         std::cout<<"failed load tupename dialog texture\n";
         success = false;
@@ -270,9 +274,30 @@ bool loadMedia(LTexture &gBackgroundTexture1, LTexture &gBackgroundTexture2, LTe
             std::cout << "failed to render text texture!\n";
             success = false;
         }
+        if(!gTextEnterTexture[INSTRUCTION].loadFromRenderedText(gRenderer, gFont, "Instruction", textColor)) {
+            std::cout << "failed to instruction text texture!\n";
+            success = false;
+        }
         string introText = "A little game from TQM";
         if(!gIntroTextTexture.loadFromRenderedText(gRenderer, gFont, introText, textColor)) {
             std::cout << "failed to render text texture!\n";
+            success = false;
+        }
+        if(!gInsHowToPlay.loadFromRenderedText(gRenderer,gFont,"~How to play: Drag and move the mouse",textColor)){
+            std::cout << "failed to instruction play texture!\n";
+            success = false;
+        }
+
+        if(!gInsHowToPlayCont.loadFromRenderedText(gRenderer,gFont,"on the screen to move the ball to hole!",textColor)){
+            std::cout << "failed to instruction play texture!\n";
+            success = false;
+        }
+        if(!gInsHowToMuteMusic.loadFromRenderedText(gRenderer,gFont,"~Press \"m\" to pause or play the music!",textColor)){
+            std::cout << "failed to instruction music texture!\n";
+            success = false;
+        }
+        if(!gInsHowToBackMenu.loadFromRenderedText(gRenderer,gFont,"~If you want to back to menu, press \"ESC\"!",textColor)){
+            std::cout << "failed to instruction play texture!\n";
             success = false;
         }
     }

@@ -168,7 +168,7 @@
 1652592921 c:\users\admin\desktop\advprogrammingbtl\src\vec2d.hpp
 	"params.hpp"
 
-1652732333 c:\users\admin\desktop\advprogrammingbtl\src\params.hpp
+1652740123 c:\users\admin\desktop\advprogrammingbtl\src\params.hpp
 	<iostream>
 	<cmath>
 	<vector>
@@ -227,7 +227,7 @@
 1651912050 source:c:\users\admin\desktop\advprogrammingbtl\src\teleport.cpp
 	"Teleport.hpp"
 
-1652735501 source:c:\users\admin\desktop\advprogrammingbtl\src\main.cpp
+1652740484 source:c:\users\admin\desktop\advprogrammingbtl\src\main.cpp
 	"params.hpp"
 	"Utils.hpp"
 	"LTexture.hpp"
@@ -242,7 +242,7 @@
 	"Player.hpp"
 	"InfoWind.hpp"
 
-1652735702 c:\users\admin\desktop\advprogrammingbtl\src\utils.hpp
+1652740469 c:\users\admin\desktop\advprogrammingbtl\src\utils.hpp
 	"params.hpp"
 	"LTexture.hpp"
 	"Ball.hpp"
@@ -254,7 +254,6 @@
 	"Wind.hpp"
 	"Player.hpp"
 	"InfoBlock.hpp"
-	"LButton.hpp"
 
 1652542821 c:\users\admin\desktop\advprogrammingbtl\src\infoblock.hpp
 	"params.hpp"

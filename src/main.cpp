@@ -106,6 +106,12 @@ int main(int argc, char* argv[]) {
     LTexture gTypeNameTitle;
     LTexture gNameTypingTexture;
 
+    LTexture gInstructionTitle;
+    LTexture gInsHowToPlay;
+    LTexture gInsHowToPlayCont;
+    LTexture gInsHowToMuteMusic;
+    LTexture gInsHowToBackMenu;
+
     if(!init(gWindow, gRenderer))std::cout << "init failed\n";
     else {
         if(!loadMedia(gBackgroundTexture1, gBackgroundTexture2, gBackgroundTexture3, gBackgroundTexture4, gBackgroundSaveNameTexture,
@@ -115,6 +121,7 @@ int main(int argc, char* argv[]) {
                       gMusic,
                       gIntroTextTexture,
                       gRankingTitle, gNameTitle, gScoreTitle,
+                      gInstructionTitle,gInsHowToPlay,gInsHowToPlayCont,gInsHowToMuteMusic,gInsHowToBackMenu,
                       gDialogTypeNameTexture, gTypeNameTitle,
                       ball,
                       hole,gHoleChunk,
@@ -136,6 +143,7 @@ int main(int argc, char* argv[]) {
             bool isEnter = false;
             bool isWin = true;
             bool isHighScores = false;
+            bool isInstruction = false;
             bool currentPlayerIsSaved = false;
             bool isSave = false;
             int choiceMenu = 0;
@@ -198,17 +206,21 @@ int main(int argc, char* argv[]) {
                     if(e.type == SDL_QUIT) quit = true;
                     else if(e.type == SDL_KEYDOWN) {
                         if(e.key.keysym.sym == SDLK_ESCAPE) {
+                            isInstruction = false;
                             isEnter = false;
                             isHighScores = false;
                         } else if(e.key.keysym.sym == SDLK_SPACE) {
                             if(isSave && nameTyping.size() <= 12) {
                                 nameTyping += char(e.key.keysym.sym);
                             }
-                            if(choiceMenu == 0 && !isHighScores ) {
+                            if(choiceMenu == ENTERGAME && !isHighScores && !isInstruction ) {
                                 isEnter = true;
                             }
-                            if(choiceMenu == 1 && !isEnter) {
+                            if(choiceMenu == RANKING && !isEnter && !isInstruction) {
                                 isHighScores = true;
+                            }
+                            if(choiceMenu == INSTRUCTION&&!isEnter&&!isHighScores){
+                                isInstruction = true;
                             }
                             break;
                         }
@@ -694,7 +706,17 @@ int main(int argc, char* argv[]) {
                     }
                 } else {
                     totalSwings = 0;
-                    if(!isHighScores) renderMenuAndLogo(gRenderer, gBackgroundTexture1, gEnterTexture, gTextEnterTexture, gLogoGame, choiceMenu);
+                    if(!isHighScores) {
+                        if(!isInstruction) renderMenuAndLogo(gRenderer, gBackgroundTexture1, gEnterTexture, gTextEnterTexture, gLogoGame, choiceMenu);
+                        else{
+                            gBackgroundTexture2.render(gRenderer);
+                            gInstructionTitle.render(gRenderer,(SCREEN_WIDTH - gInstructionTitle.getWidth())/2,60);
+                            gInsHowToPlay.render(gRenderer,(SCREEN_WIDTH - gInsHowToPlay.getWidth())/2,180);
+                            gInsHowToPlayCont.render(gRenderer,(SCREEN_WIDTH - gInsHowToPlayCont.getWidth())/2,220);
+                            gInsHowToMuteMusic.render(gRenderer,(SCREEN_WIDTH - gInsHowToMuteMusic.getWidth())/2,280);
+                            gInsHowToBackMenu.render(gRenderer,(SCREEN_WIDTH - gInsHowToBackMenu.getWidth())/2,340);
+                        }
+                    }
                     else {
                         renderHighScoreBoard(gRenderer, gBackgroundTexture4, gRankingTitle, gNameTitle, gScoreTitle, gPlayerNameTextTexture, gPlayerScoreTextTexture, gFont, topPlayers);
                     }
