@@ -1,6 +1,5 @@
 # Mini-Golf
-Bài tập lớn môn "_Lập trình nâng cao_"(INT2215_24) 
-Thực hiện bởi: Trần Quang Minh - MSV: 21020471.
+Bài tập lớn môn "_Lập trình nâng cao_"(INT2215_24)/n Thực hiện bởi: Trần Quang Minh - MSV: 21020471.
 Game được thực hiện dựa trên ý tưởng của trò chơi đánh golf và phương thức điều khiển chính là sử dụng chuột để thao tác.
 Game được code bằng ngôn ngữ C++ có tích hợp sử dụng thư viện đồ hoạ SDL.
 ## Các vấn đề chính trong game
