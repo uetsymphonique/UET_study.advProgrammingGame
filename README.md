@@ -41,17 +41,17 @@ Trở lại menu, sử dụng phím "ARROW_UP" và "ARROW_DOWN" để tuỳ ch�
 ![image](https://user-images.githubusercontent.com/89717384/170007138-47e4ea23-e113-4547-bef6-18e0dbfe5b98.png) 
 + Băng (Ice):  Bóng đi trên băng sẽ bị trôi  
 ![image](https://user-images.githubusercontent.com/89717384/170007662-93f087c2-874e-444b-958a-703035c6ec40.png)
-+ Cổng Không gian(Teleport):  Bóng đi qua cổng không gian, sẽ đến với cổng không gian cùng cặp  
++ Cổng Không gian (Teleport):  Bóng đi qua cổng không gian, sẽ đến với cổng không gian cùng cặp  
 ![image](https://user-images.githubusercontent.com/89717384/170007305-7a4cdb80-cc2e-4f1b-9475-9949e2749723.png)
 + Vùng gió (Wind):  Bóng đi và vùng gió sẽ bị tác động theo hướng của mũi tên gió  
 ![image](https://user-images.githubusercontent.com/89717384/170007508-21548a6b-d09c-455c-bc13-e937c3db3b7b.png)
 - Sau khi đã đưa được bóng vào lỗ và hoàn thành từng level bạn sẽ được báo rằng đã hoàn thành màn chơi đó  
 ![image](https://user-images.githubusercontent.com/89717384/170008469-0da1314d-1d1c-41e4-9e19-a09a54aa8e97.png)
-- Nếu bạn đã chơi qua hết tất cả level, sẽ có một màn hình để lưu tên người chơi, hãy nhập tên để được lưu lại trên bảng điểm "High Scores" (chức năng chỉ nhận các phím trên bảng chữ cái a=z và bảng số 0-9 cùng phím "Backspace" và nhận tối đa 12 kí tự)   
+- Nếu bạn đã chơi qua hết tất cả level, sẽ có một màn hình để lưu tên người chơi, hãy nhập tên để được lưu lại trên bảng điểm "High Scores" (chức năng chỉ nhận các phím trên bảng chữ cái a-z, bảng số 0-9, phím "SPACE" cùng phím "Backspace" và nhận tối đa 12 kí tự , ấn Enter để lưu nhé!)     
 ![image](https://user-images.githubusercontent.com/89717384/170008940-a24a23fc-a8f1-4d80-8350-0687c85c2f05.png)
-
-
-
+- Với chức năng "High Scores", danh sách top 10 best scores hiện ra với tên và điểm số:  
+![image](https://user-images.githubusercontent.com/89717384/170009915-2904feca-b861-4202-81c7-f427e584dc40.png)
+- Link video demo: 
 ## Các vấn đề chính trong game
 Để có thể hoàn thành game, cần giải quyết một số vấn đề chính sau:
 - Nhận sự kiện chuột sau đó cung cấp cho quả bóng một vận tốc để quả bóng có thể di chuyển theo hướng ta mong muốn. Tuỳ theo cách người dùng kéo thả chuột trên màn chơi từ vị trí A đến vị trí B, độ lớn của vận tốc và hướng của vận tốc sẽ thay đổi.
@@ -61,6 +61,6 @@ Trở lại menu, sử dụng phím "ARROW_UP" và "ARROW_DOWN" để tuỳ ch�
   + Rơi xuống lỗ khi gặp lỗ.
 - Ngoài ra game còn có một số các tính năng đặc biệt khác để tạo hứng thú cho người chơi ví dụ như địa hình gió làm thay đổi vận tốc, địa hình băng làm bóng trôi hay địa hình đầm lầy khiến bóng bị chìm.
 ## Tài liệu tham khảo
-- S
+- Hướng dẫn sử dụng SDL của lazyfoo: https://lazyfoo.net/tutorials/SDL/index.php
 - Ý tưởng của game có lấy một phần từ project game "_Twini-Golf_" (https://github.com/PolyMarsDev/Twini-Golf), game sử dụng lại một số hình ảnh và sound effect của project nói trên chứ hoàn toàn không sao chép code hay modify project này.
 - Xin gửi lời cảm ơn đến tác giả của project game nói trên về sự giúp đỡ về mặt tài nguyên hình ảnh và sound effect, đồng thời gửi lời cảm ơn đến hai giảng viên Trần Thị Minh Châu (https://github.com/chauttm) và Kiều Hải Đăng của Trường Đại học Công nghệ, ĐHQGHN đã cung cấp những kiến thức cần có để tôi có thể hoàn thành project này.
