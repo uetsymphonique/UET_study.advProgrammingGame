@@ -9,7 +9,48 @@ Trước khi tải hoặc clone project về, hãy lưu ý:
 * Nếu bạn chỉ quan tâm đến việc tải game về và chơi, sẽ không có lưu ý gì cả, bạn chỉ việc tải về và trải nghiệm
 * Nếu bạn quan tâm và muốn phát triển dự án hoặc đơn giản là chỉ chạy thử trên IDE, hãy đảm bảo rằng IDE của bạn có phục vụ cho ngôn ngữ C++ và có cài đặt thêm thư viện đồ hoạ SDL phục vụ cho C++ (Cách cài đặt SDL: https://lazyfoo.net/tutorials/SDL/01_hello_SDL/windows/index.php)
 ## Cách cài đặt
-## Cách sử dụng
+Để tải game về chơi, hãy download file zip về
+![image](https://user-images.githubusercontent.com/89717384/170001630-6e0aef9c-eb44-455a-8b03-0fe87cfc9b22.png)
+Sau khi đã tải được file zip về, giải nén bạn hãy chạy file projectgame.exe và bắt đầu trải nghiệm game
+![image](https://user-images.githubusercontent.com/89717384/170001996-d13d5987-d18c-41fc-bd11-6922c575488d.png)
+Và đây là màn chơi sẽ được hiển thị: 
+![image](https://user-images.githubusercontent.com/89717384/170002126-58684ae4-2f57-444f-8311-858aa5d1c996.png)
+## Cách chơi game
+Sau khi mở game lên chơi bạn sẽ thấy hiện lên màn hình như sau:
+![image](https://user-images.githubusercontent.com/89717384/170002747-34876afe-64d9-409f-bd64-f99c0a4dab99.png)
+- Nếu ấn "SPACE" bạn sẽ được dẫn đến Instruction(Phần Hướng dẫn game) như sau:
+![image](https://user-images.githubusercontent.com/89717384/170002999-ef9fc021-6c26-4dd3-9956-c7beb31e9d24.png)
+- Như bạn đã thấy nhiệm vụ của game này là bạn phải đánh được quả bóng vào lỗ bằng cách kéo thả chuột từ hai vị trí bất kì trên màn hình
+- Ngoài ra ấn "ESC" khi muốn trở lại menu và ấn "m" để tắt nhạc của game
+Trở lại menu, sử dụng phím "ARROW_UP" và "ARROW_DOWN" để tuỳ chỉnh được menu, bên cạnh "Instruction" ta có hay tuỳ chọn khác là:
+![image](https://user-images.githubusercontent.com/89717384/170004402-c9eb1ada-762f-4ce0-b808-2da1e076abd7.png)  
+![image](https://user-images.githubusercontent.com/89717384/170004458-b770fd10-8920-46a6-9e74-a65774d78146.png)  
+- Để chọn một tính năng hãy ấn "SPACE", sau khi vào game, màn chơi hiện ra như sau:
+![image](https://user-images.githubusercontent.com/89717384/170005029-1e443df6-ca7e-43ca-af96-84970b6ae2d6.png)
+- Cụ thể hơn chúng ta có:
++ Bóng, mũi tên chỉ hướng và thanh đo lực (Hướng và dộ lớn lực sẽ được hiện ra khi và chỉ khi bạn giữ chuột và kéo đi trên màn hình, độ lớn thanh lực và hướng mũi tên sẽ tuỳ chỉnh theo hướng và độ dài quãng đường kéo chuột của bạn tính từ điểm bạn nhấp chuột đến vị trí hiện tại):  
+![image](https://user-images.githubusercontent.com/89717384/170005476-33407eff-0fb2-4963-ac63-f7cdf8b11508.png)
++ Lỗ:  
+![image](https://user-images.githubusercontent.com/89717384/170005907-19befec2-3404-4e05-9754-663a2dfcf7a8.png)  
++ Các vật cản:   
+![image](https://user-images.githubusercontent.com/89717384/170006070-6bae5228-51fe-4d04-a2f2-4e4e3e075f7b.png)  
++ Số gậy đã đánh: 
+![image](https://user-images.githubusercontent.com/89717384/170006359-acbbc69e-7f07-4d02-aea5-098f06afa31d.png)
+- Ngoài ra trong các level sau ta có các tính năng khác như: 
++ Đầm lầy (Swamp): Nếu bóng của bạn rơi vào đó, sẽ có hiện tượng mất bóng và bạn phải bắt đầu lại ở vị trí đánh bóng ngay trước đó  
+![image](https://user-images.githubusercontent.com/89717384/170007138-47e4ea23-e113-4547-bef6-18e0dbfe5b98.png) 
++ Băng (Ice):  Bóng đi trên băng sẽ bị trôi  
+![image](https://user-images.githubusercontent.com/89717384/170007662-93f087c2-874e-444b-958a-703035c6ec40.png)
++ Cổng Không gian(Teleport):  Bóng đi qua cổng không gian, sẽ đến với cổng không gian cùng cặp  
+![image](https://user-images.githubusercontent.com/89717384/170007305-7a4cdb80-cc2e-4f1b-9475-9949e2749723.png)
++ Vùng gió (Wind):  Bóng đi và vùng gió sẽ bị tác động theo hướng của mũi tên gió  
+![image](https://user-images.githubusercontent.com/89717384/170007508-21548a6b-d09c-455c-bc13-e937c3db3b7b.png)
+- Sau khi đã đưa được bóng vào lỗ và hoàn thành từng level bạn sẽ được báo rằng đã hoàn thành màn chơi đó  
+![image](https://user-images.githubusercontent.com/89717384/170008469-0da1314d-1d1c-41e4-9e19-a09a54aa8e97.png)
+- Nếu bạn đã chơi qua hết tất cả level, sẽ có một màn hình để lưu tên người chơi, hãy nhập tên để được lưu lại trên bảng điểm "High Scores" (chức năng chỉ nhận các phím trên bảng chữ cái a=z và bảng số 0-9 cùng phím "Backspace" và nhận tối đa 12 kí tự)   
+![image](https://user-images.githubusercontent.com/89717384/170008940-a24a23fc-a8f1-4d80-8350-0687c85c2f05.png)
+
+
 
 ## Các vấn đề chính trong game
 Để có thể hoàn thành game, cần giải quyết một số vấn đề chính sau:
